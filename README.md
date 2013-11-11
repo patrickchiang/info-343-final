@@ -34,8 +34,8 @@ more to come... soon..
 
 Roles
 -----
-Jessalyn Cheng - I volunteer to be PM! :D MY LIFE LONG DREAM AWAITS ME.
-Chip Fukuhara - I volunteer to be on the development side. (compsci major!)
++ Jessalyn Cheng - I volunteer to be PM! :D MY LIFE LONG DREAM AWAITS ME.
++ Chip Fukuhara - I volunteer to be on the development side. (compsci major!)
 
 TODO
 ----
@@ -46,14 +46,13 @@ Opinions on Pitches
 -------------------
 
 --------Schedule Finder---------
-Chip - The tough part about this would be using the school's API to get
-the information on the classes
++ Chip: The tough part about this would be using the school's API to get the information on the classes
 
 -----------Pet Matcher-----------
 
 
 ------Daily Code Challenge-------
-Chip - Have we thought about where the code challenges are going to come from? It also sounds a bit similar to Practice-It
++ Chip: Have we thought about where the code challenges are going to come from? It also sounds a bit similar to Practice-It
 
 ----------Food Website-----------
 
