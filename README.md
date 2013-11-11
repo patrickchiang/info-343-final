@@ -5,9 +5,7 @@ Ideas
 -----
 Pitch your ideas here:
 
-1. Better schedule finder for classes. The schedule finder that UW has sucks since it barely gives us different
-schedules. Usually it's like the same schedule but only one class changes. Create a website that'll actually show
-unique schedules.
+1. Interactive scheduler for classes. The current schedule finder doesn't show all possible schedules if there are more than 10, and people have to open up multiple pages to find registration codes to change the classes they want to view. Create a website that will allow the users to do this on the same page and easily change what classes they want to see. 
 
 2. Pet matcher: For people looking to adopt a dog and to people breeding dogs and want to make sure the 
 owner is sane enough to have a dog and won't just throw it outside. Probably focus more on matching personalities.
@@ -37,8 +35,28 @@ more to come... soon..
 Roles
 -----
 Jessalyn Cheng - I volunteer to be PM! :D MY LIFE LONG DREAM AWAITS ME.
+Chip Fukuhara - I volunteer to be on the development side. (compsci major!)
 
 TODO
 ----
 + Pitch your ideas
 + Pick your roles
+
+Opinions on Pitches
+-------------------
+
+--------Schedule Finder---------
+Chip - The tough part about this would be using the school's API to get
+the information on the classes
+
+-----------Pet Matcher-----------
+
+
+------Daily Code Challenge-------
+Chip - Have we thought about where the code challenges are going to come from? It also sounds a bit similar to Practice-It
+
+----------Food Website-----------
+
+--------Fashion Website----------
+
+------Tech Product Website-------
