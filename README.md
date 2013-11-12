@@ -27,6 +27,8 @@ because they don't know technology. This website will have the different brands 
 it'll be categorized by people's rates/reviews. Because not everyone wants to get all technical into hardrive. 
 It'll focus on the usability of the technology and basically how long it lasts etc etc. 
 
+7. On the topic of using the school API, how about something that takes those UW course evaluations and give it a pretty visualization. Best prof for selected course, easiest grader...etc. Graphcs, charts, search, compare. (Also, they get deleted every quarter, so storage would be nice too.)
+
 AND BAM.
 
 more to come... soon..
@@ -36,6 +38,7 @@ Roles
 -----
 + Jessalyn Cheng - I volunteer to be PM! :D MY LIFE LONG DREAM AWAITS ME.
 + Chip Fukuhara - I volunteer to be on the development side. (compsci major!)
++ Patrick Chiang - I want to develop too.
 
 TODO
 ----
@@ -47,15 +50,19 @@ Opinions on Pitches
 
 --------Schedule Finder---------
 + Chip: The tough part about this would be using the school's API to get the information on the classes
++ Patrick: Not as hard as screen grabbing + parsing. https://wiki.cac.washington.edu/display/SWS/Using+Public+Resources I've worked with it quite a bit.
 
 -----------Pet Matcher-----------
-
++ Patrick: Social networks are overdone.
 
 ------Daily Code Challenge-------
 + Chip: Have we thought about where the code challenges are going to come from? It also sounds a bit similar to Practice-It
++ Patrick: Sounds like codingbat, CodeAcademy, or one of those challenges where you can make money from. There's a website online where companies post problem specs, people code solutions, and they pick the best code solution and pay them. Forgot what it's called. Totally do-able, but will be a hassle to integrate compiler.
 
 ----------Food Website-----------
++ Patrick: Food? Really?
 
 --------Fashion Website----------
 
 ------Tech Product Website-------
++ Patrick: This already exists, I think. Otherwise a great idea.
