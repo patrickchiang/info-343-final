@@ -74,3 +74,4 @@ Opinions on Pitches
 ----------UW course Evaluation-----------
 + Jessalyn: My friend did something like this for info320 and went under fire. It's totally doable though, since everything is public (Despite the privacy issues lulz). How exactly would we order by best prof or what not. Some of the results can be unreliable.
 + Chip: What type of technology are you thinking we'd use for the vis? With the ones I know it would be pretty tough to get this done in a few weeks.
++ Patrick: Download everything with script, store in text file or db, then create visualizations. Similar to your idea.
