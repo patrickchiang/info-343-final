@@ -29,6 +29,8 @@ It'll focus on the usability of the technology and basically how long it lasts e
 
 7. On the topic of using the school API, how about something that takes those UW course evaluations and give it a pretty visualization. Best prof for selected course, easiest grader...etc. Graphcs, charts, search, compare. (Also, they get deleted every quarter, so storage would be nice too.)
 
+8. Coupon website! With better categorical ordering (since the other ones suck lol) and actually have a search bar! 
+
 AND BAM.
 
 more to come... soon..
@@ -66,3 +68,6 @@ Opinions on Pitches
 
 ------Tech Product Website-------
 + Patrick: This already exists, I think. Otherwise a great idea.
+
+----------UW course Evaluation-----------
++ Jessalyn: My friend did something like this for info320 and went under fire. It's totally doable though, since everything is public (Despite the privacy issues lulz). How exactly would we order by best prof or what not. Some of the results can be unreliable. 
