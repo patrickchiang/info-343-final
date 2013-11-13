@@ -76,3 +76,4 @@ Opinions on Pitches
 + Chip: What type of technology are you thinking we'd use for the vis? With the ones I know it would be pretty tough to get this done in a few weeks.
 + Patrick: Download everything with script, store in text file or db, then create visualizations. Similar to your idea.
 + Jessalyn: Patrick got dis! Shall we do this one?
++ Chip: I'd be on board with this one. I was talking about the actual visualization part though. I've worked with d3.js and canvas(a while ago) but it's a lot of work to make visualizations in my experience.
