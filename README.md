@@ -1,6 +1,34 @@
 Info 343 Final Project
 ======================
 
+TODO
+----
++ Work on mockups
++ Complete data extraction
+
+Data Format
+-----------
+Format of JSON files located in data dir.
+
+```javascript
+[   // Array of all classes
+    {   // One class
+        "name":"Information School INFO 200 A", // Name of class
+        "instructor":"Michael Eisenberg",   // Name of instructor
+        "quarter":"AU12",   // Quarter info
+        "The course as a whole:":[  // Name of question
+            "64%",  // % of responders who said Excellent
+            "26%",  // Very Good
+            "9%",   // Good
+            "1%",   // Fair
+            "0%",   // Poor
+            "0%",   // Very Poor
+            "4.71"  // Median rating
+      ]
+    }
+]
+```
+
 Ideas
 -----
 Pitch your ideas here:
@@ -41,11 +69,7 @@ Roles
 + Jessalyn Cheng - I volunteer to be PM! :D MY LIFE LONG DREAM AWAITS ME.
 + Chip Fukuhara - I volunteer to be on the development side. (compsci major!)
 + Patrick Chiang - I want to develop too.
-
-TODO
-----
-+ Pitch your ideas
-+ Pick your roles
++ Wesley G Wolanski - Design
 
 Opinions on Pitches
 -------------------
