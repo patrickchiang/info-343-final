@@ -7,6 +7,26 @@ startHead();
 <!-- Put any script and stylesheets unique to this page's header above here -->
 <?php endHead(); ?>
 
+<div class='class-table'>
+	<table class="table table-hover table-striped">
+	  <thead>
+	  	<tr>
+	  		<td>Course Name</td>
+	  		<td>Instructor</td>
+	  		<td>Quarter</td>
+	  	</tr>
+	  </thead>
+	  <tbody>
+	  	<tr class='class-row template'>
+	  		<td class='table-name'></td>
+	  		<td class='table-instr'></td>
+	  		<td class='table-qtr'></td>
+	  	</tr>
+	  </tbody>
+	</table>
+
+</div>
+
 <!-- Everything below here is INSIDE the body tag -->
 <div class='panel'>
 	<canvas id="display-chart" width="400" height="400">

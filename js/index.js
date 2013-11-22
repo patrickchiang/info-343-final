@@ -1,11 +1,19 @@
 var ctx = $("#display-chart").get(0).getContext("2d");
 
-// var jsonData = 
-// $.getJSON("data/I.json",function(data){
-//    console.log(this.ctx);
-//    return data;
-// });
-// console.log(jsonData);
+
+$.getJSON("data/I.json",function(jsonData){
+    var tbody = $('.class-table tbody');
+	var classObj, template;
+	for(var i=0; i<jsonData.length; ++i){
+		classObj = jsonData[i];
+		template = $('.class-row.template').clone();
+		template.find('.table-name').html(classObj.name);
+		template.find('.table-instr').html(classObj.instructor);
+		template.find('.table-qtr').html(classObj.quarter);
+		template.removeClass('template');
+		tbody.append(template);
+	}
+});
 
 var datasets;
 

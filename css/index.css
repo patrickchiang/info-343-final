@@ -1,1 +1,14 @@
 @import url(common.css);
+
+.template{
+	display: none;
+}
+.class-table{
+	width: 60%;
+	max-height: 600px;
+	overflow: auto;
+}
+thead > tr{
+	background-color: #EEE;
+	font-weight: bold;
+}
