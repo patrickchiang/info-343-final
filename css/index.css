@@ -8,6 +8,10 @@
 	max-height: 600px;
 	overflow: auto;
 }
+.class-row:hover{
+	background-color: #EEE;
+	cursor: pointer;
+}
 thead > tr{
 	background-color: #EEE;
 	font-weight: bold;

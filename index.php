@@ -24,16 +24,14 @@ startHead();
 	  	</tr>
 	  </tbody>
 	</table>
-
 </div>
 
 <!-- Everything below here is INSIDE the body tag -->
 <div class='panel'>
-	<canvas id="display-chart" width="400" height="400">
-		<h2 class='class-name'></h2>
-		<h3 class='instructor'></h3>
-		<h3 class='quarter'></h3>
-	</canvas>
+	<h2 class='class-name'></h2>
+	<h3 class='instructor'></h3>
+	<h3 class='quarter'></h3>
+	<canvas id="display-chart" width="400" height="400"></canvas>
 </div>
 <!-- Everything above here is INSIDE the body tag -->
 
