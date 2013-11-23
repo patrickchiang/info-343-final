@@ -18,31 +18,50 @@ function renderTable(jsonData){
 		tbody.append(template);
 		(function(jsonObj){
 			template.click(function(){
-				var info = {}, labels = [], stats = [];
+				var info = {}, stats = {};
 				for(key in jsonObj){
 					if(typeof jsonObj[key] == "object"){
-						labels.push(key);
-						stats.push(jsonObj[key]);
+						stats[key] = jsonObj[key];
 					} else{
 						info[key] = jsonObj[key];
 					}
 				}
-				renderCharts(labels, info, stats);
+				renderCharts(info, stats, key);
 			});
 		})(classObj);
 	}
 }
 
-function renderCharts(labels, info, stats){
+function renderCharts(info, stats, selected){
 	$('.class-name').html(info.name);
 	$('.instructor').html(info.instructor);
 	$('.quarter').html(info.quarter);
+
+	//Add radio buttons
+	var container = $('.graph-selector');
+	container.empty();
+	for(var chart in stats){
+		var chartData = stats[chart];
+		var button = $(document.createElement('input'));
+		var label = $(document.createElement('label'));
+		label.html(chart);
+		button.attr('type', 'radio');
+		button.attr('name', 'chart-select');
+		button.attr('value', chart);
+		label.append(button);
+		container.append(label);
+	}
+	$('.graph-selector input[value="'  + selected + '"]').attr('checked', 'checked');
+	$('input[name="chart-select"]').change(function(){
+		renderCharts(info, stats, $(this).val());
+	});
+
 	var data = {
-		labels: labels,
+		labels: ["Excellent", "Very Good", "Good", "Fair", "Poor", "Very Poor", "Median"],
 		datasets: [{
 			fillColor : "rgba(220,220,220,0.5)",
 			strokeColor : "rgba(220,220,220,1)",
-			data: stats[0]
+			data: stats[selected]
 		}]
 	}
 	var options = {

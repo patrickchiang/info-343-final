@@ -32,6 +32,7 @@ startHead();
 	<h3 class='instructor'></h3>
 	<h3 class='quarter'></h3>
 	<canvas id="display-chart" width="400" height="400"></canvas>
+	<div class='graph-selector'></div>
 </div>
 <!-- Everything above here is INSIDE the body tag -->
 
