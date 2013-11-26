@@ -4,9 +4,12 @@
 	display: none;
 }
 .class-table{
-	width: 60%;
-	max-height: 600px;
-	overflow: auto;
+	display: inline-block;
+    max-height: 600px;
+    min-width: 450px;
+    overflow: auto;
+    border: 1px solid #CCC;
+    box-shadow: 2px 2px 4px #CCC;
 }
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th{
 	background-color: #97BBCD;
@@ -20,4 +23,46 @@
 thead > tr{
 	background-color: #EEE;
 	font-weight: bold;
+}
+.graph-selector{
+	width: 400px;
+}
+.graph-selector > label{
+	margin-left: 10px;
+}
+.panel{
+	text-align: center;
+	width: 450px;
+	margin: auto;
+	display: inline-block;
+	box-shadow: 2px 2px 4px;
+}
+.row{
+	width: 100%;
+	margin: 20px auto;
+}
+.col-md-6{
+	text-align: center;
+	width: 50%;
+	margin: 0;
+	padding: 0;
+}
+@media(max-width: 992px){
+	.row, .panel, .class-table{
+		display: block;
+	}
+	.row{
+		width: 90%;
+	}
+	.col-md-6{
+		width: 100%;
+	}
+	.panel, .class-table{
+		width: 80%;
+		min-width: 400px;
+		margin: 20px auto;
+	}
+	.graph-selector{
+		margin: 0 auto;
+	}
 }

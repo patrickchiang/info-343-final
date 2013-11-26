@@ -6,34 +6,43 @@ startHead();
 	<link rel="stylesheet" href="css/index.css">
 <!-- Put any script and stylesheets unique to this page's header above here -->
 <?php endHead(); ?>
+	<div class='row'>
+		<div class='col-md-6'>
+			<div class='class-table'>
+				<table class="table table-hover table-striped">
+				  <thead>
+				  	<tr>
+				  		<td>Course Name</td>
+				  		<td>Instructor</td>
+				  		<td>Quarter</td>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				  	<tr class='class-row template'>
+				  		<td class='table-name'></td>
+				  		<td class='table-instr'></td>
+				  		<td class='table-qtr'></td>
+				  	</tr>
+				  </tbody>
+				</table>
+			</div>
+		</div>
 
-<div class='class-table'>
-	<table class="table table-hover table-striped">
-	  <thead>
-	  	<tr>
-	  		<td>Course Name</td>
-	  		<td>Instructor</td>
-	  		<td>Quarter</td>
-	  	</tr>
-	  </thead>
-	  <tbody>
-	  	<tr class='class-row template'>
-	  		<td class='table-name'></td>
-	  		<td class='table-instr'></td>
-	  		<td class='table-qtr'></td>
-	  	</tr>
-	  </tbody>
-	</table>
-</div>
-
-<!-- Everything below here is INSIDE the body tag -->
-<div class='panel'>
-	<h2 class='class-name'></h2>
-	<h3 class='instructor'></h3>
-	<h3 class='quarter'></h3>
-	<canvas id="display-chart" width="400" height="400"></canvas>
-	<div class='graph-selector'></div>
-</div>
+		<!-- Everything below here is INSIDE the body tag -->
+		<div class='col-md-6'>
+			<div class='panel panel-primary'>
+				<div class="panel-heading">
+					<h2 class='class-name'></h2>
+					<h3 class='instructor'></h3>
+					<h3 class='quarter'></h3>
+				</div>
+				<div class="panel-body">
+					<canvas id="display-chart" width="400" height="400"></canvas>
+					<div class='graph-selector'></div>
+				 </div>
+			</div>
+		</div>
+	</div>
 <!-- Everything above here is INSIDE the body tag -->
 
 <?php startFooter();?>
