@@ -8,9 +8,14 @@
 	max-height: 600px;
 	overflow: auto;
 }
-.class-row:hover{
-	background-color: #EEE;
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th{
+	background-color: #97BBCD;
 	cursor: pointer;
+	color: #FFF;
+}
+.table-hover > tbody > tr.selected > td, .table-hover > tbody > tr.selected > th{
+	background-color: #97BBCD;
+	color: #FFF;
 }
 thead > tr{
 	background-color: #EEE;

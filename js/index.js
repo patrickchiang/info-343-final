@@ -2,12 +2,19 @@ $(function(){
 	$.getJSON("data/I.json",function(jsonData){
 		renderTable(jsonData);
 	});
+	$(window).ready(function(){
+		$('.class-table tbody > .class-row:nth-child(2)').trigger('click');
+	});
 });
 
+var selectedElt;
 
 function renderTable(jsonData){
  	var tbody = $('.class-table tbody');
 	var classObj, template;
+
+	renderDefaultChart(jsonData);
+
 	for(var i=0; i<jsonData.length; ++i){
 		classObj = jsonData[i];
 		template = $('.class-row.template').clone();
@@ -15,9 +22,16 @@ function renderTable(jsonData){
 		template.find('.table-instr').html(classObj.instructor);
 		template.find('.table-qtr').html(classObj.quarter);
 		template.removeClass('template');
+		if(i==0){
+			template.addClass('selected');
+			selectedElt = template;
+		}
 		tbody.append(template);
 		(function(jsonObj){
 			template.click(function(){
+				selectedElt.removeClass('selected');
+				selectedElt = $(this);
+				$(this).addClass('selected');
 				var info = {}, stats = {};
 				for(key in jsonObj){
 					if(typeof jsonObj[key] == "object"){
@@ -75,6 +89,23 @@ function renderCharts(info, stats, selected){
 	}));
 	var context =  $("#display-chart").get(0).getContext("2d");
 	var barGraph = new Chart(context).Bar(data, options);
+}
+
+function renderDefaultChart(jsonData){
+	var defaultElement = jsonData[0];
+	var defaultInfo = {}, defaultStats = {};
+
+	//Render the charts for the first element in the row
+	if(defaultElement){
+		for(key in defaultElement){
+			if(typeof defaultElement[key] == "object"){
+				defaultStats[key] = defaultElement[key];
+			} else{
+				defaultInfo[key] = defaultElement[key];
+			}
+		}
+		renderCharts(defaultInfo, defaultStats, key);
+	} else alert("No data loaded");
 }
 
 // var datasets;
