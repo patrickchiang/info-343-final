@@ -26,14 +26,16 @@ thead > tr{
 }
 .graph-selector{
 	width: 400px;
+	margin: auto;
 }
 .graph-selector > label{
 	margin-left: 10px;
 }
 .panel{
 	text-align: center;
-	width: 450px;
+	width: 600px;
 	margin: auto;
+	height: 600px;
 	display: inline-block;
 	box-shadow: 2px 2px 4px;
 }
@@ -46,6 +48,9 @@ thead > tr{
 	width: 50%;
 	margin: 0;
 	padding: 0;
+}
+#display-chart{
+	height: 400px;
 }
 @media(max-width: 992px){
 	.row, .panel, .class-table{

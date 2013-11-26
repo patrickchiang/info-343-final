@@ -79,13 +79,17 @@ function renderCharts(info, stats, selected){
 		}]
 	}
 	var options = {
+		scaleSteps : 20,
+		scaleStepWidth : 5,
+		scaleStartValue : 0,
+		scaleOverride : true
 		//Place additional graph options here
 	}
 	$('#display-chart').remove();
 	$('.panel').append($(document.createElement('canvas')).attr({
 		"id": "display-chart",
-		"width": "400px",
-		"height": "400px"
+		"height": '350px',
+		"width": '550px'
 	}));
 	var context =  $("#display-chart").get(0).getContext("2d");
 	var barGraph = new Chart(context).Bar(data, options);
