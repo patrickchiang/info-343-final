@@ -82,7 +82,9 @@ function renderCharts(info, stats, selected){
 		scaleSteps : 20,
 		scaleStepWidth : 5,
 		scaleStartValue : 0,
-		scaleOverride : true
+		scaleOverride : true,
+		scaleLabel : "<%=value + '%'%>"
+
 		//Place additional graph options here
 	}
 	$('#display-chart').remove();
