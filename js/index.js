@@ -1,7 +1,10 @@
 $(function(){
+	//Retrieve the data from the json file, render table
 	$.getJSON("data/I.json",function(jsonData){
 		renderTable(jsonData);
 	});
+
+	//When the images have loaded, activate the first row
 	$(window).ready(function(){
 		$('.class-table tbody > .class-row:nth-child(2)').trigger('click');
 	});
@@ -9,11 +12,15 @@ $(function(){
 
 var selectedElt;
 
+//jsonData: the array of json objects retrieved from the file
 function renderTable(jsonData){
+ 	//Element to append each row to
  	var tbody = $('.class-table tbody');
-	var classObj, template;
 
-	renderDefaultChart(jsonData);
+	var classObj, //An object representing evaluations for a certain class
+		template; //Row template to be copied and cloned
+
+	renderDefaultChart(jsonData); //Draws the default chart for the row
 
 	for(var i=0; i<jsonData.length; ++i){
 		classObj = jsonData[i];
@@ -21,25 +28,41 @@ function renderTable(jsonData){
 		template.find('.table-name').html(classObj.name);
 		template.find('.table-instr').html(classObj.instructor);
 		template.find('.table-qtr').html(classObj.quarter);
+		template.find('.table-median');
 		template.removeClass('template');
 		if(i==0){
 			template.addClass('selected');
 			selectedElt = template;
 		}
+		
+		var medianSum = 0, medianCount = 0;
+		for(key in classObj){
+			if(typeof classObj[key] == "object"){
+				var statsLength = classObj[key].length;
+				medianSum += classObj[key][statsLength-1]
+				medianCount++;
+			}
+		}
+		template.find('.table-median').html((medianSum/medianCount).toFixed(2));
+
 		tbody.append(template);
 		(function(jsonObj){
 			template.click(function(){
 				selectedElt.removeClass('selected');
+				var medianSum = 0,
+					medianCount = 0;
 				selectedElt = $(this);
 				$(this).addClass('selected');
 				var info = {}, stats = {};
 				for(key in jsonObj){
 					if(typeof jsonObj[key] == "object"){
 						stats[key] = jsonObj[key];
+						stats[key].pop();
 					} else{
 						info[key] = jsonObj[key];
 					}
 				}
+				info['median'] = medianSum/medianCount;
 				renderCharts(info, stats, key);
 			});
 		})(classObj);
@@ -71,7 +94,7 @@ function renderCharts(info, stats, selected){
 	});
 
 	var data = {
-		labels: ["Excellent", "Very Good", "Good", "Fair", "Poor", "Very Poor", "Median"],
+		labels: ["Excellent", "Very Good", "Good", "Fair", "Poor", "Very Poor"],
 		datasets: [{
 			fillColor : "rgba(220,220,220,0.5)",
 			strokeColor : "rgba(220,220,220,1)",
@@ -98,7 +121,8 @@ function renderCharts(info, stats, selected){
 }
 
 function renderDefaultChart(jsonData){
-	var defaultElement = jsonData[0];
+	var defaultElement = jsonData[0],
+		medianSum = 0, medianCount = 0;
 	var defaultInfo = {}, defaultStats = {};
 
 	//Render the charts for the first element in the row
@@ -106,10 +130,12 @@ function renderDefaultChart(jsonData){
 		for(key in defaultElement){
 			if(typeof defaultElement[key] == "object"){
 				defaultStats[key] = defaultElement[key];
+				defaultStats[key].pop();
 			} else{
 				defaultInfo[key] = defaultElement[key];
 			}
 		}
+		defaultInfo['median'] = medianSum / medianCount;
 		renderCharts(defaultInfo, defaultStats, key);
 	} else alert("No data loaded");
 }

@@ -15,6 +15,7 @@ startHead();
 				  		<td>Course Name</td>
 				  		<td>Instructor</td>
 				  		<td>Quarter</td>
+				  		<td>Overall (x.xx/5)</td>
 				  	</tr>
 				  </thead>
 				  <tbody>
@@ -22,6 +23,7 @@ startHead();
 				  		<td class='table-name'></td>
 				  		<td class='table-instr'></td>
 				  		<td class='table-qtr'></td>
+				  		<td class='table-median'></td>
 				  	</tr>
 				  </tbody>
 				</table>
