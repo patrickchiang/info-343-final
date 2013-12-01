@@ -62,7 +62,7 @@ startHead();
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
-    		<div class='panel panel-primary'>
+    		<div class='panel panel-primary info'>
 					<div class="panel-heading">
   	        <h2 class="main-type"></h2>
 		      </div>
@@ -91,7 +91,7 @@ startHead();
 						</div>
 					</div>
 				</div>
-				<div class='panel panel-primary'>
+				<div class='panel panel-primary graph'>
 					<div class='panel-heading'>
 						<h2 class="other-type"></h2>
 		        <h3 class="quarter"></h3>

@@ -4,6 +4,11 @@
 	display: none;
 }
 
+canvas.display-chart {
+	width: 500px;
+	height: 350px;
+}
+
 .logo {
 	width: 250px;
 	height: 150px;
@@ -13,6 +18,10 @@
 #tabs {
 	  width: 60%;
 
+}
+
+input[type=radio]{
+	margin-left: 10px;
 }
 
 .ui-widget-header {
@@ -56,21 +65,28 @@ thead > tr{
 .graph-selector > label{
 	margin-left: 10px;
 }
+
+.info{
+	height: 500px;
+}
+
+.graph {
+	height: 600px;
+}
+
 .panel{
 	text-align: center;
 	/*width: 600px;*/
 	margin: auto;
-	max-height: 600px;
 	overflow: auto;
 	display: inline-block;
 	box-shadow: 2px 2px 4px;
 	vertical-align: top;
 	clear: both;
+	margin: 20px;
+	width: 600px;
 }
 
-.display-chart{
-	height: 400px;
-}
 .modal-dialog{
 	min-width: 460px;
 	width: 90%;
