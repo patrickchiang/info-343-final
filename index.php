@@ -4,9 +4,13 @@ startHead();
 ?>
 <!-- Put any script and stylesheets unique to this page's header below here -->
 	<link rel="stylesheet" href="css/index.css">
+	<link rel="shortcut icon" href="img/icon.png">
 <!-- Put any script and stylesheets unique to this page's header above here -->
 <?php endHead(); ?>
 	<!-- Everything below here is INSIDE the body tag -->
+
+<img src="img/logo.png" alt="Uvaluate" class="logo"/>
+
 <div id="tabs">
 	<ul>
 		<li><a href="#class-tab">Classes</a></li>
