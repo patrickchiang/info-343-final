@@ -3,23 +3,48 @@
 .template{
 	display: none;
 }
+
+.logo {
+	width: 250px;
+	height: 150px;
+	margin-bottom: 100px;
+}
+
+#tabs {
+	  width: 60%;
+
+}
+
+.ui-widget-header {
+	border: none;
+	border-bottom: 1px solid #aaa;
+	background: none;
+}
+
+.table {
+	   font-family: 'Raleway', sans-serif;
+}
+
 .class-table, .instr-table{
 	display: inline-block;
-    max-height: 600px;
+    max-height: 450px;
     min-width: 450px;
     overflow: auto;
     border: 1px solid #CCC;
     box-shadow: 2px 2px 4px #CCC;
+
 }
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th{
 	background-color: #97BBCD;
 	cursor: pointer;
 	color: #FFF;
+
 }
 .table-hover > tbody > tr.selected > td, .table-hover > tbody > tr.selected > th{
 	background-color: #97BBCD;
 	color: #FFF;
 }
+
 thead > tr{
 	background-color: #EEE;
 	font-weight: bold;
@@ -40,7 +65,9 @@ thead > tr{
 	display: inline-block;
 	box-shadow: 2px 2px 4px;
 	vertical-align: top;
+	clear: both;
 }
+
 .display-chart{
 	height: 400px;
 }
