@@ -1,104 +1,236 @@
 $(function(){
+	$('#tabs').tabs();
+	tabClick();
 	//Retrieve the data from the json file, render table
 	$.getJSON("data/I.json",function(jsonData){
-		renderTable(jsonData);
-	});
-
-	//When the images have loaded, activate the first row
-	$(window).ready(function(){
-		$('.class-table tbody > .class-row:nth-child(2)').trigger('click');
+		preprocess(jsonData);
+		renderTable(instr_to_meds, instr_to_all, $('.instr-table'), "Instructor");
+		renderTable(class_to_meds, class_to_all, $('.class-table'), "Course");
+		$($('tbody').children()[1]).trigger('click');
 	});
 });
 
-var selectedElt;
+var instr_to_all = {}; //Instructor Name -> whole json class object
+var class_to_all = {}; //Class Name -> whole json class object
+var instr_to_meds = {}; //Instructor -> [med, med, med, med...]
+var class_to_meds = {}; //Class -> [med, med, med, med...]
+var selectedRow;
+var selectedModalRow;
 
-//jsonData: the array of json objects retrieved from the file
-function renderTable(jsonData){
- 	//Element to append each row to
- 	var tbody = $('.class-table tbody');
-
-	var classObj, //An object representing evaluations for a certain class
-		template; //Row template to be copied and cloned
-
-	renderDefaultChart(jsonData); //Draws the default chart for the row
-
+function preprocess(jsonData){
 	for(var i=0; i<jsonData.length; ++i){
-		classObj = jsonData[i];
-		template = $('.class-row.template').clone();
-		template.find('.table-name').html(classObj.name);
-		template.find('.table-instr').html(classObj.instructor);
-		template.find('.table-qtr').html(classObj.quarter);
-		template.find('.table-median');
-		template.removeClass('template');
-		if(i==0){
-			template.addClass('selected');
-			selectedElt = template;
-		}
-		
-		var medianSum = 0, medianCount = 0;
-		for(key in classObj){
-			if(typeof classObj[key] == "object"){
-				var statsLength = classObj[key].length;
-				medianSum += classObj[key][statsLength-1]
-				medianCount++;
+		var jsonObj = jsonData[i];
+
+
+		var nameTokens = jsonObj.name.split(" ");
+		var nameSansSect = "", section = nameTokens[nameTokens.length-1];
+		nameTokens.pop();
+		for(var token=0; token<nameTokens.length; ++token){
+			nameSansSect += nameTokens[token];
+			if(token!=nameTokens.length-1){
+				nameSansSect += " ";
 			}
 		}
-		template.find('.table-median').html((medianSum/medianCount).toFixed(2));
+		jsonObj.name = nameSansSect;
+		jsonObj.section = section;
 
-		tbody.append(template);
-		(function(jsonObj){
-			template.click(function(){
-				selectedElt.removeClass('selected');
-				var medianSum = 0,
-					medianCount = 0;
-				selectedElt = $(this);
-				$(this).addClass('selected');
-				var info = {}, stats = {};
-				for(key in jsonObj){
-					if(typeof jsonObj[key] == "object"){
-						stats[key] = jsonObj[key];
-						stats[key].pop();
-					} else{
-						info[key] = jsonObj[key];
-					}
+		var classSum = 0, classCount = 0, instrSum = 0, instrCount = 0;
+		var attrList = [["Amount learned:", "course"], ["The course as a whole:", "course"], 
+						["The course content:", "course"], ["Instructor's contribution:", "instr"], 
+						["Instructor's effectiveness:", "instr"], ["Instructor's interest:", "instr"],
+						["Grading Techniques:", "instr"]];
+		
+		//Add up medians, delete median from list, add median measures to 
+		for(var j=0; j<attrList.length; ++j){
+			var attr = attrList[j];
+			var attrName = attr[0], attrType = attr[1], value = jsonObj[attr[0]];
+			if(value){
+				if(attrType == "course"){
+					classSum += value[6];
+					classCount++;
+				} else{ //attrType == instr
+					instrSum += value[6];
+					instrCount++;
 				}
-				info['median'] = medianSum/medianCount;
-				renderCharts(info, stats, key);
-			});
-		})(classObj);
+				// value.pop();
+			} 
+		}
+		var instrMedian = instrSum / instrCount;
+		var classMedian = classSum / classCount;
+
+		if(class_to_meds[jsonObj.name]){
+			class_to_meds[jsonObj.name].push(classMedian);
+		} else{
+			class_to_meds[jsonObj.name] = [classMedian];
+		}
+		if(instr_to_meds[jsonObj.instructor]){
+			instr_to_meds[jsonObj.instructor].push(instrMedian);
+		} else{
+			instr_to_meds[jsonObj.instructor] = [instrMedian];
+		}
+		if(instr_to_all[jsonObj.instructor]){
+			instr_to_all[jsonObj.instructor].push(jsonObj);
+		} else{
+			instr_to_all[jsonObj.instructor] = [jsonObj];
+		}
+		if(class_to_all[jsonObj.name]){
+			class_to_all[jsonObj.name].push(jsonObj);
+		} else{
+			class_to_all[jsonObj.name] = [jsonObj];
+		}
 	}
 }
 
-function renderCharts(info, stats, selected){
-	$('.class-name').html(info.name);
-	$('.instructor').html(info.instructor);
-	$('.quarter').html(info.quarter);
+function renderTable(medianMap, mapToAll, table, type){
+	var template;
+	var container = table.find('tbody');
+	var index = 0;
+	for(var medianKey in medianMap){
+		template = table.find('.merged-row.template').clone();
+		template.find('.table-name').html(medianKey);
+		var medianArr = medianMap[medianKey];
+		var medianSum = 0, medianCount = 0;
+		for(var i=0; i<medianArr.length; ++i){
+			medianSum += medianArr[i];
+			medianCount++;
+		}
+		var median = medianSum / medianCount;
+		template.find('.table-median').html(median.toFixed(2));
+		template.find('.table-count').html(medianCount);
+		template.removeClass('template');
+		(function(rowData, template){
+			template.click(function(){
+				clickHandler(rowData, template, type);
+			});
+		})(mapToAll[medianKey], template);
+		
+		container.append(template);
+		index++;
+	}
+}
 
-	//Add radio buttons
+function clickHandler(rowData, template, type){
+	if(selectedRow){
+		selectedRow.removeClass('selected');
+	} 
+	selectedRow = template;
+	template.addClass('selected');
+	$('#rowModal').modal();
+	drawModalTable(rowData, type);
+}
+
+function tabClick(){
+	$('.ui-tabs-anchor').click(function(){
+		var tabType = $(this).html();
+		if(tabType == "Instructors"){
+			$($('.instr-table').find('tbody').children()[1]).trigger('click');
+		} else {
+			$($('.class-table').find('tbody').children()[1]).trigger('click');
+		}
+	});
+}
+
+function drawModalTable(rowData, type){
+	var rowObj, template;
+	var mainElt, otherElt, quarter, section;
+	var container = $('.modal-table tbody');
+	var savedTemplate = $(container.children()[0]);
+	container.empty();
+	container.append(savedTemplate);
+	if(type=="Instructor"){
+		$('.instr-header').hide();
+		$('.course-header').show();
+		$('.modal-instr').hide();
+		$('.modal-name').show();
+	} else{
+		$('.course-header').hide();
+		$('.instr-header').show();
+		$('.modal-name').hide();
+		$('.modal-instr').show();
+	}
+	for(var i=0; i<rowData.length; ++i){
+		rowObj = rowData[i];
+		template = container.find('.template').clone();
+		if(type=="Course"){
+			template.find('.modal-instr').html(rowObj.instructor);
+		} else{ template.find('.modal-name').html(rowObj.name); }
+		template.find('.modal-qtr').html(rowObj.quarter);
+		template.find('.modal-sect').html(rowObj.section);
+
+		var medianSum = 0, medianCount = 0, key, propVal;
+		for(key in rowObj){
+			propVal = rowObj[key];
+			if(typeof propVal == "object"){
+				medianSum += propVal[propVal.length-1];
+				medianCount++;
+				// propVal.pop();
+			}
+		}
+		template.find('.modal-median').html((medianSum/medianCount).toFixed(2));
+		template.removeClass('template');
+		(function(data, type, clickedElt){
+			template.click(function(){
+				modalClick(data, type, clickedElt);
+			});
+		})(rowObj, type, template);
+		container.append(template);
+		if(i==0){
+			template.trigger('click');
+		}
+	}
+}
+
+function modalClick(data, type, selectedElt){
+	//Mark modal row as selected
+	if(selectedModalRow){
+		selectedModalRow.removeClass('selected');
+	} selectedModalRow = selectedElt;
+	selectedElt.addClass('selected');
+
+	//Fill in chart panel heading
+	if(type=="Course"){
+		$('.main-type').html(data.name);
+		$('.other-type').html(data.instructor);
+	} else{
+		$('.main-type').html(data.instructor);
+		$('.other-type').html(data.name);
+	}
+	$('.quarter').html(data.quarter);
+
+  //Add radio selectors
 	var container = $('.graph-selector');
 	container.empty();
-	for(var chart in stats){
-		var chartData = stats[chart];
-		var button = $(document.createElement('input'));
-		var label = $(document.createElement('label'));
-		label.html(chart);
-		button.attr('type', 'radio');
-		button.attr('name', 'chart-select');
-		button.attr('value', chart);
-		label.append(button);
-		container.append(label);
+	var key, value;
+	for(key in data){
+		value = data[key];
+		if(typeof value == "object"){
+			var button = $(document.createElement('input'));
+			var label = $(document.createElement('label'));
+			label.html(key);
+			button.attr('type', 'radio');
+			button.attr('name', 'chart-select');
+			button.attr('value', key);
+			label.append(button);
+			container.append(label);
+		}
 	}
-	$('.graph-selector input[value="'  + selected + '"]').attr('checked', 'checked');
-	$('input[name="chart-select"]').change(function(){
-		renderCharts(info, stats, $(this).val());
+	var first_radio = container.find("input")[0];
+	$(first_radio).attr('checked', 'checked');
+	$('.graph-selector input[name="chart-select"]').change(function(){
+		renderCharts($(this).val(), data[$(this).val()]);
 	});
+	$('.graph-selector input[name="chart-select"]').trigger('change');
+}
 
+function renderCharts(chartType, chartData){
+	$('.median').html(chartData[chartData.length-1]);
+	var noMedianData = chartData.slice(0, chartData.length-1);
 	var data = {
 		labels: ["Excellent", "Very Good", "Good", "Fair", "Poor", "Very Poor"],
 		datasets: [{
 			fillColor : "rgba(220,220,220,0.5)",
 			strokeColor : "rgba(220,220,220,1)",
-			data: stats[selected]
+			data: noMedianData
 		}]
 	}
 	var options = {
@@ -110,56 +242,13 @@ function renderCharts(info, stats, selected){
 
 		//Place additional graph options here
 	}
-	$('#display-chart').remove();
-	$('.panel').append($(document.createElement('canvas')).attr({
-		"id": "display-chart",
-		"height": '350px',
-		"width": '550px'
-	}));
-	var context =  $("#display-chart").get(0).getContext("2d");
-	var barGraph = new Chart(context).Bar(data, options);
+		$('.display-chart').remove();
+		$('.chart-container').append($(document.createElement('canvas')).attr({
+			"class": "display-chart",
+			"id": "display-chart",
+			"height": '350px',
+			"width": '450px'
+		}));
+		var context =  $(".display-chart").get(0).getContext("2d");
+		var barGraph = new Chart(context).Bar(data, options);
 }
-
-function renderDefaultChart(jsonData){
-	var defaultElement = jsonData[0],
-		medianSum = 0, medianCount = 0;
-	var defaultInfo = {}, defaultStats = {};
-
-	//Render the charts for the first element in the row
-	if(defaultElement){
-		for(key in defaultElement){
-			if(typeof defaultElement[key] == "object"){
-				defaultStats[key] = defaultElement[key];
-				defaultStats[key].pop();
-			} else{
-				defaultInfo[key] = defaultElement[key];
-			}
-		}
-		defaultInfo['median'] = medianSum / medianCount;
-		renderCharts(defaultInfo, defaultStats, key);
-	} else alert("No data loaded");
-}
-
-// var datasets;
-
-// var data = {
-// 	labels : ["January","February","March","April","May","June","July"],
-// 	datasets : [
-// 		{
-// 			fillColor : "rgba(220,220,220,0.5)",
-// 			strokeColor : "rgba(220,220,220,1)",
-// 			data : [65,59,90,81,56,55,40]
-// 		},
-// 		{
-// 			fillColor : "rgba(151,187,205,0.5)",
-// 			strokeColor : "rgba(151,187,205,1)",
-// 			data : [28,48,40,19,96,27,100]
-// 		}
-// 	]
-// };
-
-// var options = {
-
-// };
-
-// var barGraph = new Chart(ctx).Bar(data,options);

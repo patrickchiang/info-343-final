@@ -3,7 +3,7 @@
 .template{
 	display: none;
 }
-.class-table{
+.class-table, .instr-table{
 	display: inline-block;
     max-height: 600px;
     min-width: 450px;
@@ -33,36 +33,27 @@ thead > tr{
 }
 .panel{
 	text-align: center;
-	width: 600px;
+	/*width: 600px;*/
 	margin: auto;
-	height: 600px;
+	max-height: 600px;
+	overflow: auto;
 	display: inline-block;
 	box-shadow: 2px 2px 4px;
+	vertical-align: top;
 }
-.row{
-	width: 100%;
-	margin: 20px auto;
-}
-.col-md-6{
-	text-align: center;
-	width: 50%;
-	margin: 0;
-	padding: 0;
-}
-#display-chart{
+.display-chart{
 	height: 400px;
 }
+.modal-dialog{
+	min-width: 460px;
+	width: 90%;
+}
+
 @media(max-width: 992px){
-	.row, .panel, .class-table{
+	.panel, .class-table{
 		display: block;
 	}
-	.row{
-		width: 90%;
-	}
-	.col-md-6{
-		width: 100%;
-	}
-	.panel, .class-table{
+	.panel, .class-table, .instr-table{
 		width: 80%;
 		min-width: 400px;
 		margin: 20px auto;
