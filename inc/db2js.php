@@ -25,6 +25,12 @@
 		$cid = "";
 	}
 
+	if (isset($_GET['section'])) {
+		$section = $_GET['section'];
+	} else {
+		$section = "";
+	}
+
 	try {
 		// connect to mysql don't hack me thanks
 		$host = "localhost";
@@ -95,12 +101,60 @@
 		}
 
 		if ($query == "getscoresforsection") {
-		    // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getscoresforsection&cid=142
+			// Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getscoresforsection&cid=142
+			// Use getsections to get cid, then get scores using this query
 			$stmt = $dbh->query('SELECT * FROM scores WHERE course_id = "' . $cid . '"');
 			$stmt->setFetchMode(PDO::FETCH_ASSOC);
 			while ($row = $stmt->fetch()) {
 				echo json_encode($row);
 			}
+		}
+
+		if ($query == "getspecificcourseratings") {
+			// Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getspecificcourseratings&dept=INFO&num=200
+			// This gives you course ratings, specific to course questions, excludes prof questions
+			$stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.dept = "' . $dept . '" AND c.num = "' . $num . '" AND (s.question LIKE "%course%" OR s.question LIKE "%learn%" OR s.question LIKE "%section%")');
+			$stmt->setFetchMode(PDO::FETCH_ASSOC);
+			while ($row = $stmt->fetch()) {
+				echo json_encode($row);
+			}
+		}
+
+		if ($query == "getspecificsectionratings") {
+			// Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getspecificsectionratings&cid=142
+			// Same as above, except with cid
+			$stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE s.course_id = "' . $cid . '" AND (s.question LIKE "%course%" OR s.question LIKE "%learn%" OR s.question LIKE "%section%")');
+			$stmt->setFetchMode(PDO::FETCH_ASSOC);
+			while ($row = $stmt->fetch()) {
+				echo json_encode($row);
+			}
+		}
+
+		if ($query == "getspecificprofratings") {
+			// Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getspecificprofratings&prof=Michael%20Eisenberg
+			// This gives you course ratings, specific to course questions, excludes prof questions
+			$stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $prof . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
+			$stmt->setFetchMode(PDO::FETCH_ASSOC);
+			while ($row = $stmt->fetch()) {
+				echo json_encode($row);
+			}
+		}
+
+		if ($query == "sumprofratings") {
+			// Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=sumprofratings&prof=Michael%20Eisenberg
+			// Sum up ratings for all questions relevant to the instructor
+			$stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $prof . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
+			$scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0);
+			while ($row = $stmt->fetch()) {
+				$scores["surveyed"] += $row["surveyed"];
+				$scores["excellent"] += round($row["surveyed"] * $row["excellent"] / 100);
+				$scores["verygood"] += round($row["surveyed"] * $row["verygood"] / 100);
+				$scores["good"] += round($row["surveyed"] * $row["good"] / 100);
+				$scores["fair"] += round($row["surveyed"] * $row["fair"] / 100);
+				$scores["poor"] += round($row["surveyed"] * $row["poor"] / 100);
+				$scores["verypoor"] += round($row["surveyed"] * $row["verypoor"] / 100);
+			}
+			echo json_encode($scores);
 		}
 
 		$dbh = null;
