@@ -40,7 +40,7 @@ $("body > a").not(".navlink").each(function(iout) {
 						rowName = $($(item)[i2]).html().trim();
 						classes[rowName] = [];
 					} else if (i2 > 0 && i2 < 8) {
-						classes[rowName].push(parseInt($($(item)[i2]).html().trim()));
+						classes[rowName].push(parseFloat($($(item)[i2]).html().trim()));
 					}
 				});
 			}

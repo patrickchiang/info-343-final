@@ -12,6 +12,7 @@
 	 `quarter` varchar(4) NOT NULL,
 	 `surveyed` int(11) NOT NULL,
 	 `enrolled` int(11) NOT NULL,
+     `median` float, 
 	 UNIQUE KEY `id` (`id`)
 	 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -55,6 +56,9 @@
 
 			$id = $dbh->lastInsertId();
 
+			$median = 0;
+			$i = 0;
+
 			// for the scores
 			foreach ($row as $key => $info) {
 				if (is_array($info)) {
@@ -70,9 +74,17 @@
 					$stmt->bindParam(8, $info[5]);
 					$stmt->bindParam(9, $info[6]);
 
+					$median += $info[6];
+					$i++;
+
 					$stmt->execute();
 				}
 			}
+            
+            $avg = $median / $i;
+            
+			$stmt = $dbh->prepare("UPDATE courses SET median=$avg WHERE id=$id");
+			$stmt->execute();
 		}
 
 		$dbh = null;
