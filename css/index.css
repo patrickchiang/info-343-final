@@ -1,7 +1,6 @@
 @import url(common.css);
 
-
-.template{
+.template {
 	display: none;
 }
 
@@ -21,7 +20,7 @@ canvas.display-chart {
 	min-width: 420px;
 }
 
-input[type=radio]{
+input[type=radio] {
 	margin-left: 10px;
 }
 
@@ -35,44 +34,42 @@ input[type=radio]{
 	font-family: 'Raleway', sans-serif;
 }
 
-.class-table, .instr-table{
+.class-table, .instr-table {
 	display: inline-block;
-   	max-height: 700px;
-    min-width: 450px;
-    overflow: auto;
-    border: 1px solid #CCC;
-    box-shadow: 2px 2px 4px #CCC;
-
+	max-height: 700px;
+	min-width: 450px;
+	overflow: auto;
+	border: 1px solid #CCC;
+	box-shadow: 2px 2px 4px #CCC;
 }
-.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th{
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
 	background-color: #7F3FBF;
 	cursor: pointer;
 	color: #FFF;
-
 }
-.table-hover > tbody > tr.selected > td, .table-hover > tbody > tr.selected > th{
+.table-hover > tbody > tr.selected > td, .table-hover > tbody > tr.selected > th {
 	background-color: #7F3FBF;
 	color: #FFF;
 }
 
-thead > tr{
+thead > tr {
 	background-color: #EEE;
 	font-weight: bold;
 }
-.graph-selector{
+.graph-selector {
 	width: 400px;
 	margin: auto;
 }
 
-.panel-primary>.panel-heading{
+.panel-primary > .panel-heading {
 	background-color: #663399;
 }
 
-.graph-selector > label{
+.graph-selector > label {
 	margin-left: 10px;
 }
 
-.info{
+.info {
 	height: 500px;
 }
 
@@ -80,7 +77,7 @@ thead > tr{
 	height: 600px;
 }
 
-.panel{
+.panel {
 	text-align: center;
 	/*width: 600px;*/
 	margin: auto;
@@ -93,21 +90,21 @@ thead > tr{
 	width: 600px;
 }
 
-.modal-dialog{
+.modal-dialog {
 	min-width: 460px;
 	width: 90%;
 }
 
-@media(max-width: 992px){
-	.panel, .class-table{
+@media (max-width: 992px) {
+	.panel, .class-table {
 		display: block;
 	}
-	.panel, .class-table, .instr-table{
+	.panel, .class-table, .instr-table {
 		width: 80%;
 		min-width: 400px;
 		margin: 20px auto;
 	}
-	.graph-selector{
+	.graph-selector {
 		margin: 0 auto;
 	}
 }

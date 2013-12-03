@@ -1,14 +1,62 @@
 $(function() {
 	$('#tabs').tabs();
+
+	/*
 	tabClick();
 	//Retrieve the data from the json file, render table
 	$.getJSON("data/I.json", function(jsonData) {
-		preprocess(jsonData);
-		renderTable(instr_to_meds, instr_to_all, $('.instr-table'), "Instructor");
-		renderTable(class_to_meds, class_to_all, $('.class-table'), "Course");
-		$($('tbody').children()[1]).trigger('click');
-	});
+	preprocess(jsonData);
+	renderTable(instr_to_meds, instr_to_all, $('.instr-table'), "Instructor");
+	renderTable(class_to_meds, class_to_all, $('.class-table'), "Course");
+	$($('tbody').children()[1]).trigger('click');
+	});*/
+
+	// find and list all the courses
+	populateClassesTable();
+	// get course ratings, list 'em all
+
+	// find and list num of instructors
+
+	// enrolled/surveyed do something with that
+
+	// click handler: list all sections for course (instructors, quarter, section, rating)
+
+	// click handler: list all questions for section
+
+	// on tab click instructors
+
+	// list all distinct instructors
+
+	// click handler: show all courses/sections for instructor
+
+	// click handler: list all questions for section
+
 });
+
+function populateClassesTable() {
+	var table = $('.class-table');
+	var container = table.find('tbody');
+
+	db("listcourses", null, null, null, null, null, function(data) {
+		var classes = JSON.parse(data);
+
+		for (var i = 0; i < classes.length; i++) {
+			var template = table.find('.merged-row.template').clone();
+			template.find(".table-name").html(classes[i]);
+			template.attr("data-course", classes[i]);
+			template.removeClass('template');
+			container.append(template);
+		}
+
+		table.find('.merged-row').not('.template').each(function(i, e) {
+			db("sumcoursescores", null, $(e).data("course").split(" ")[0], $(e).data("course").split(" ")[1], null, null, function(scores) {
+				var scoreSum = JSON.parse(scores);
+				$(e).find('.table-median').html(scoreSum.median.toFixed(2));
+			});
+		});
+
+	});
+}
 
 var instr_to_all = {};
 //Instructor Name -> whole json class object
@@ -256,7 +304,7 @@ function renderCharts(chartType, chartData) {
 	var barGraph = new Chart(context).Bar(data, options);
 }
 
-function db(query, prof, dept, num, cid, section) {
+function db(query, prof, dept, num, cid, section, callback) {
 	var getString = "?query=" + query;
 	if (prof) {
 		getString += "&prof=" + prof;
@@ -273,8 +321,9 @@ function db(query, prof, dept, num, cid, section) {
 	if (section) {
 		getString += "&section=" + section;
 	}
-	
+
 	$.ajax("inc/db2js.php" + getString).done(function(data) {
 		console.log(data);
+		callback(data);
 	});
 }

@@ -41,7 +41,7 @@
 
         if ($query == "listcourses") {
             // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=listcourses
-            $stmt = $dbh->query('SELECT dept, num FROM courses');
+            $stmt = $dbh->query('SELECT DISTINCT dept, num FROM courses');
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $allcourses = array();
             while ($row = $stmt->fetch()) {
@@ -77,7 +77,7 @@
             // This gives you estimated number of people who voted for each category
             $stmt = $dbh->query('SELECT c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.dept = "' . $dept . '" AND c.num = "' . $num . '"');
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0);
+            $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0, "median" => 0);
             while ($row = $stmt->fetch()) {
                 $scores["surveyed"] += $row["surveyed"];
                 $scores["excellent"] += round($row["surveyed"] * $row["excellent"] / 100);
@@ -86,7 +86,9 @@
                 $scores["fair"] += round($row["surveyed"] * $row["fair"] / 100);
                 $scores["poor"] += round($row["surveyed"] * $row["poor"] / 100);
                 $scores["verypoor"] += round($row["surveyed"] * $row["verypoor"] / 100);
+                $scores["median"] += $row["surveyed"] * $row["median"];
             }
+            $scores["median"] /= $scores["surveyed"];
             echo json_encode($scores);
         }
 
