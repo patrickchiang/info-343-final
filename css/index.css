@@ -12,7 +12,12 @@ canvas.display-chart {
 .logo {
 	width: 250px;
 	height: 150px;
-	margin-bottom: 100px;
+	margin-bottom: 50px;
+}
+
+
+body {
+	background-image: url('http://students.washington.edu/jylcheng/info343/final/img/snow.png');
 }
 
 #tabs {
@@ -31,7 +36,7 @@ input[type=radio]{
 }
 
 .table {
-	   font-family: 'Raleway', sans-serif;
+	font-family: 'Raleway', sans-serif;
 }
 
 .class-table, .instr-table{
