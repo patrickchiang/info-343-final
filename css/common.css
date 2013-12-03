@@ -2,14 +2,12 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway);
 
 /*Place all styles common to all pages here*/
+
 body{
 	font-family: 'Raleway', sans-serif;
 	font-size: 16px;
-	padding-top: 30px;
-	padding-right: 50px;
-	padding-left: 50px;
-	padding-bottom: 50px;
-	background-image: url('../img/snow.png');
+	background-image: url('../img/bench.png');
+	background-repeat: no-repeat;
 }
 
 h2 {
