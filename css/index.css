@@ -1,5 +1,6 @@
 @import url(common.css);
 
+
 .template{
 	display: none;
 }
@@ -12,16 +13,11 @@ canvas.display-chart {
 .logo {
 	width: 250px;
 	height: 150px;
-	margin-bottom: 50px;
-}
-
-
-body {
-	background-image: url('http://students.washington.edu/jylcheng/info343/final/img/snow.png');
+	margin-bottom: 30px;
 }
 
 #tabs {
-	width: 60%;
+	width: 70%;
 	min-width: 420px;
 }
 
@@ -41,7 +37,7 @@ input[type=radio]{
 
 .class-table, .instr-table{
 	display: inline-block;
-    max-height: 450px;
+   	max-height: 700px;
     min-width: 450px;
     overflow: auto;
     border: 1px solid #CCC;
@@ -49,13 +45,13 @@ input[type=radio]{
 
 }
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th{
-	background-color: #97BBCD;
+	background-color: #7F3FBF;
 	cursor: pointer;
 	color: #FFF;
 
 }
 .table-hover > tbody > tr.selected > td, .table-hover > tbody > tr.selected > th{
-	background-color: #97BBCD;
+	background-color: #7F3FBF;
 	color: #FFF;
 }
 
@@ -67,6 +63,11 @@ thead > tr{
 	width: 400px;
 	margin: auto;
 }
+
+.panel-primary>.panel-heading{
+	background-color: #663399;
+}
+
 .graph-selector > label{
 	margin-left: 10px;
 }
