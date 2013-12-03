@@ -9,9 +9,9 @@ startHead();
 <?php endHead(); ?>
 	<!-- Everything below here is INSIDE the body tag -->
 
-<div class="texture">
+<div class="container main-col">
 	<img src="img/logo.png" alt="Uvaluate" class="logo"/>
-
+	<!-- <img src="img/bench.png" alt="bench" class="benches"/> -->
 	<div id="tabs">
 		<ul>
 			<li><a href="#class-tab">Classes</a></li>
@@ -110,6 +110,7 @@ startHead();
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 </div>
+
 
 <?php startFooter();?>
 <!-- Put any script and stylesheets unique to this page's footer below here -->

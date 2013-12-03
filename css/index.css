@@ -1,5 +1,11 @@
 @import url(common.css);
 
+.main-col {
+	border-right: 5px solid gray;
+	margin: 0px;
+	background-image: url('../img/snow.png');
+	padding: 30px;
+}
 
 .template{
 	display: none;
@@ -17,7 +23,7 @@ canvas.display-chart {
 }
 
 #tabs {
-	width: 70%;
+	width: 90%;
 	min-width: 420px;
 }
 
@@ -39,6 +45,7 @@ input[type=radio]{
 	display: inline-block;
    	max-height: 700px;
     min-width: 450px;
+
     overflow: auto;
     border: 1px solid #CCC;
     box-shadow: 2px 2px 4px #CCC;
