@@ -9,7 +9,7 @@ startHead();
 <?php endHead(); ?>
 	<!-- Everything below here is INSIDE the body tag -->
 
-<div class="container main-col">
+<div class="main-col">
 	<img src="img/logo.png" alt="Uvaluate" class="logo"/>
 	<!-- <img src="img/bench.png" alt="bench" class="benches"/> -->
 	<div id="tabs">

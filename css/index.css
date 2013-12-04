@@ -4,6 +4,15 @@
 	display: none;
 }
 
+.main-col{
+	background-image: url('../img/snow.png');
+	width: 75%;
+	height: 100%;
+	display: block;
+	margin: 0;
+	padding: 40px;
+}
+
 canvas.display-chart {
 	width: 500px;
 	height: 350px;

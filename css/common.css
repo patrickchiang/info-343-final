@@ -3,10 +3,15 @@
 
 /*Place all styles common to all pages here*/
 
+html, body{
+	height: 100%;
+}
+
 body{
 	font-family: 'Raleway', sans-serif;
 	font-size: 16px;
 	background-image: url('../img/bench.png');
+	background-position: right;
 	background-repeat: no-repeat;
 }
 
