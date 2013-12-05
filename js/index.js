@@ -37,7 +37,7 @@ function populateClassesTable() {
 	var table = $('.class-table');
 	var container = table.find('tbody');
 
-	db("listcourses", null, null, null, null, null, function(data) {
+	db("listcourses", null, null, null, null, null, null, function(data) {
 		var classes = JSON.parse(data);
 
 		for (var i = 0; i < classes.length; i++) {
@@ -49,10 +49,29 @@ function populateClassesTable() {
 		}
 
 		table.find('.merged-row').not('.template').each(function(i, e) {
-			db("sumcoursescores", null, $(e).data("course").split(" ")[0], $(e).data("course").split(" ")[1], null, null, function(scores) {
-				var scoreSum = JSON.parse(scores);
-				$(e).find('.table-median').html(scoreSum.median.toFixed(2));
-			});
+			// db("sumcoursescores", null, $(e).data("course").split(" ")[0], $(e).data("course").split(" ")[1], null, null, null, function(scores) {
+			// var scoreSum = JSON.parse(scores);
+			// $(e).find('.table-median').html(scoreSum.median.toFixed(2));
+			// });
+
+		});
+
+		var rows = table.find('.merged-row').not('.template');
+		var courseDept = new Array();
+		var courseNum = new Array();
+		for (var i = 0; i < rows.length; i++) {
+			courseDept.push(rows[i].data("course").split(" ")[0]);
+			courseNum.push(rows[i].data("course").split(" ")[1]);
+		}
+
+		courseRows = {
+			"dept" : courseDept,
+			"num" : courseNum
+		};
+
+		db("numprofsforsection", null, null, null, null, null, courseRows, function(instructors) {
+			var instuctorNum = JSON.parse(instructors);
+			$(e).find('.table-count').html(instuctorNum["COUNT(DISTINCT instructor)"]);
 		});
 
 	});
@@ -304,7 +323,7 @@ function renderCharts(chartType, chartData) {
 	var barGraph = new Chart(context).Bar(data, options);
 }
 
-function db(query, prof, dept, num, cid, section, callback) {
+function db(query, prof, dept, num, cid, section, bulk_classes, callback) {
 	var getString = "?query=" + query;
 	if (prof) {
 		getString += "&prof=" + prof;
@@ -320,6 +339,12 @@ function db(query, prof, dept, num, cid, section, callback) {
 	}
 	if (section) {
 		getString += "&section=" + section;
+	}
+
+	if (bulk_classes) {
+		$.post("inc/db2js.php" + getString, bulk_classes, function(data) {
+			console.log(data);
+		});
 	}
 
 	$.ajax("inc/db2js.php" + getString).done(function(data) {
