@@ -31,10 +31,16 @@
         $section = "";
     }
 
-    if (isset($_GET['bulk_classes'])) {
-        $bulk_classes = $_GET['bulk_classes'];
+    if (isset($_POST['dept'])) {
+        $bulk_dept = $_POST['dept'];
     } else {
-        $bulk_classes = "";
+        $bulk_dept = "";
+    }
+
+    if (isset($_POST['num'])) {
+        $bulk_num = $_POST['num'];
+    } else {
+        $bulk_num = "";
     }
 
     try {
@@ -68,15 +74,23 @@
         }
 
         if ($query == "numprofsforsection") {
-            // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=listprofs
-            json_decode($bulk_classes);
+            $query_num = "";
 
-            $query_num = 'SELECT COUNT(DISTINCT instructor) FROM courses WHERE dept = "' . $dept . '" AND num = "' . $num . '"';
-            $query_num += ' UNION ';
+            for ($i = 0; $i < count($bulk_dept); $i++) {
+                $query_num .= 'SELECT COUNT(DISTINCT instructor) FROM courses WHERE dept = "' . $bulk_dept[$i] . '" AND num = "' . $bulk_num[$i] . '"';
+                $query_num .= ' UNION ALL ';
+            }
+
+            $query_num = substr($query_num, 0, strlen($query_num) - 11);
 
             $stmt = $dbh->query($query_num);
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            echo json_encode($stmt->fetch());
+
+            $bulk_instructions = array();
+            while ($row = $stmt->fetch()) {
+                $bulk_instructions[] = $row['COUNT(DISTINCT instructor)'];
+            }
+            echo json_encode($bulk_instructions);
         }
 
         if ($query == "numclass") {
@@ -93,6 +107,28 @@
         if ($query == "sumcoursescores") {
             // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=sumcoursescores&dept=INFO&num=200
             // This gives you estimated number of people who voted for each category
+
+            if ($bulk_dept != "") {
+                $query_num = "";
+
+                for ($i = 0; $i < count($bulk_dept); $i++) {
+                    $query_num .= 'SELECT SUM(s.median * c.surveyed) / SUM(c.surveyed) AS median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.dept = "' . $bulk_dept[$i] . '" AND c.num = "' . $bulk_num[$i] . '"';
+                    $query_num .= ' UNION ALL ';
+                }
+
+                $query_num = substr($query_num, 0, strlen($query_num) - 11);
+                
+                $stmt = $dbh->query($query_num);
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $scores = array();
+                while ($row = $stmt->fetch()) {
+                    $scores[] = $row["median"];
+                }
+                echo json_encode($scores);
+
+                die();
+            }
+
             $stmt = $dbh->query('SELECT c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.dept = "' . $dept . '" AND c.num = "' . $num . '"');
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0, "median" => 0);

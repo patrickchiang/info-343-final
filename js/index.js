@@ -53,20 +53,12 @@ function populateClassesTable() {
 			container.append(template);
 		}
 
-		table.find('.merged-row').not('.template').each(function(i, e) {
-			// db("sumcoursescores", null, $(e).data("course").split(" ")[0], $(e).data("course").split(" ")[1], null, null, null, function(scores) {
-			// var scoreSum = JSON.parse(scores);
-			// $(e).find('.table-median').html(scoreSum.median.toFixed(2));
-			// });
-
-		});
-
 		var rows = table.find('.merged-row').not('.template');
 		var courseDept = new Array();
 		var courseNum = new Array();
 		for (var i = 0; i < rows.length; i++) {
-			courseDept.push(rows[i].data("course").split(" ")[0]);
-			courseNum.push(rows[i].data("course").split(" ")[1]);
+			courseDept.push($(rows[i]).data("course").split(" ")[0]);
+			courseNum.push($(rows[i]).data("course").split(" ")[1]);
 		}
 
 		courseRows = {
@@ -74,9 +66,22 @@ function populateClassesTable() {
 			"num" : courseNum
 		};
 
+
+		db("sumcoursescores", null, null, null, null, null, courseRows, function(scores) {
+			var scoreNum = JSON.parse(scores);
+			var bulkcounter = $(rows).find('.table-median');
+			for (var i = 0; i < bulkcounter.length; i++) {
+				$(bulkcounter[i]).html(parseFloat(scoreNum[i]).toFixed(2));
+			}
+		}); 
+
+
 		db("numprofsforsection", null, null, null, null, null, courseRows, function(instructors) {
 			var instuctorNum = JSON.parse(instructors);
-			$(e).find('.table-count').html(instuctorNum["COUNT(DISTINCT instructor)"]);
+			var bulkcounter = $(rows).find('.table-count');
+			for (var i = 0; i < bulkcounter.length; i++) {
+				$(bulkcounter[i]).html(instuctorNum[i]);
+			}
 		});
 
 	});
@@ -347,13 +352,20 @@ function db(query, prof, dept, num, cid, section, bulk_classes, callback) {
 	}
 
 	if (bulk_classes) {
-		$.post("inc/db2js.php" + getString, bulk_classes, function(data) {
-			console.log(data);
+		$.ajax({
+			type : "POST",
+			url : "inc/db2js.php" + getString,
+			data : {
+				dept : bulk_classes["dept"],
+				num : bulk_classes["num"]
+			},
+			success : function(data) {
+				callback(data);
+			}
+		});
+	} else {
+		$.ajax("inc/db2js.php" + getString).done(function(data) {
+			callback(data);
 		});
 	}
-
-	$.ajax("inc/db2js.php" + getString).done(function(data) {
-		console.log(data);
-		callback(data);
-	});
 }
