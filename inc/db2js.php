@@ -31,6 +31,12 @@
         $section = "";
     }
 
+    if (isset($_GET['bulk_classes'])) {
+        $bulk_classes = $_GET['bulk_classes'];
+    } else {
+        $bulk_classes = "";
+    }
+
     try {
         // connect to mysql don't hack me thanks
         $host = "localhost";
@@ -59,6 +65,18 @@
                 $instuctors[] = $row['instructor'];
             }
             echo json_encode($instuctors);
+        }
+
+        if ($query == "numprofsforsection") {
+            // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=listprofs
+            json_decode($bulk_classes);
+
+            $query_num = 'SELECT COUNT(DISTINCT instructor) FROM courses WHERE dept = "' . $dept . '" AND num = "' . $num . '"';
+            $query_num += ' UNION ';
+
+            $stmt = $dbh->query($query_num);
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            echo json_encode($stmt->fetch());
         }
 
         if ($query == "numclass") {
