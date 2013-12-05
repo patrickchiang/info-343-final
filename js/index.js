@@ -1,5 +1,10 @@
 $(function() {
 	$('#tabs').tabs();
+	// var height = window.screen.availHeight;
+	// console.log(height);
+	// $('.bench').css({
+	// 	height: height
+	// });
 
 	/*
 	tabClick();

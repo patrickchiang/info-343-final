@@ -10,9 +10,10 @@ startHead();
 	<!-- Everything below here is INSIDE the body tag -->
 
 <div class="main-col">
-	<img src="img/logo.png" alt="Uvaluate" class="logo"/>
+ 
 	<!-- <img src="img/bench.png" alt="bench" class="benches"/> -->
 	<div id="tabs">
+		<img src="img/logo.png" alt="Uvaluate" class="logo"/>
 		<ul>
 			<li><a href="#class-tab">Classes</a></li>
 			<li><a href="#instr-tab">Instructors</a></li>
@@ -111,6 +112,7 @@ startHead();
 	</div><!-- /.modal -->
 </div>
 
+<img src="img/bench2.jpg" alt="benches" class="bench"/>
 
 <?php startFooter();?>
 <!-- Put any script and stylesheets unique to this page's footer below here -->

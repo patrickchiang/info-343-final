@@ -6,16 +6,30 @@
 
 .main-col{
 	background-image: url('../img/snow.png');
-	width: 75%;
+	width: 70%;
 	height: 100%;
 	display: block;
 	margin: 0;
-	padding: 40px;
+	padding: 20px;
+	border: 1px solid black;
+	position: absolute;
+	left: 0;
 }
 
 canvas.display-chart {
 	width: 500px;
 	height: 350px;
+}
+
+img.bench {
+	/*position: relative;*/
+	height: 100%;
+	float: right;
+	display: inline-block;
+	top: 0;
+	/*right: 0;*/
+	min-width: 30%;
+	z-index: -1;
 }
 
 .logo {
@@ -25,9 +39,13 @@ canvas.display-chart {
 }
 
 #tabs {
-	width: 70%;
+	width: 90%;
 	min-width: 420px;
+	box-shadow: 10px 10px 5px #888888;
+	margin-left: auto;
+	margin-right: auto;
 }
+
 
 input[type=radio] {
 	margin-left: 10px;
@@ -115,5 +133,11 @@ thead > tr {
 	}
 	.graph-selector {
 		margin: 0 auto;
+	}
+	img.bench {
+		display: none;
+	}
+	.main-col {
+		width: 100%;
 	}
 }
