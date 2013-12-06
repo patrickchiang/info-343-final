@@ -108,7 +108,8 @@ function courseRowClick(){
 			temp.find('.modal-instr').html(rowData.instructor);
 			temp.find('.modal-qtr').html(rowData.quarter);
 			temp.find('.modal-sect').html(rowData.section);
-			temp.find('.modal-median').html((parseInt(rowData.median)).toFixed(2));
+			console.log(rowData.median);
+			temp.find('.modal-median').html((parseFloat(rowData.median)).toFixed(2));
 			temp.removeClass('template');
 			temp.attr('data-id', rowData.id);
 			container.append(temp);
