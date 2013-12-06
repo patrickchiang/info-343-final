@@ -35,7 +35,7 @@ img.bench {
 .logo {
 	width: 250px;
 	height: 150px;
-	margin-bottom: 30px;
+	margin-bottom: 5px;
 }
 
 #tabs {
@@ -63,7 +63,7 @@ input[type=radio] {
 
 .class-table, .instr-table {
 	display: inline-block;
-	max-height: 700px;
+	max-height: 326px;
 	min-width: 450px;
 	overflow: auto;
 	border: 1px solid #CCC;
