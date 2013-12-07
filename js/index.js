@@ -84,7 +84,7 @@ function populateClassesTable() {
 			}
 		});
 
-		$('#class-tab .merged-row').click(courseRowClick);
+		$('#class-table .merged-row').click(courseRowClick);
 	});
 }
 
@@ -98,7 +98,7 @@ function courseRowClick(){
 	var courseNum = courseName.split(" ")[1];
 	db("getsections", null, courseDept, courseNum, null, null, null, function(instructors){
 		var instructorList = $.parseJSON(instructors),
-		container = $('#modal-tab tbody'), template = $('#modal-tab .template');
+		container = $('#modal-table tbody'), template = $('#modal-table .template');
 		var savedTemplate = $(container.children()[0]);
 		container.empty();
 		container.append(savedTemplate);
@@ -108,17 +108,103 @@ function courseRowClick(){
 			temp.find('.modal-instr').html(rowData.instructor);
 			temp.find('.modal-qtr').html(rowData.quarter);
 			temp.find('.modal-sect').html(rowData.section);
-			console.log(rowData.median);
 			temp.find('.modal-median').html((parseFloat(rowData.median)).toFixed(2));
 			temp.removeClass('template');
 			temp.attr('data-id', rowData.id);
 			container.append(temp);
+			(function(course, rowData){
+				temp.click(function(){
+					courseModalRowClick(course, rowData)
+				});
+			})(courseName, rowData);
 			if(i==0){
 				temp.trigger('click');
 			}
 		}
 	});
 }
+
+function courseModalRowClick(course, rowData){
+	var id = rowData.id;
+	$('.main-type').html(course);
+	$('.other-type').html(rowData.instructor);
+	$('.quarter').html("Quarter: " + rowData.quarter);
+	$('.median').html("Section: " + rowData.section);
+	$('.surveyed').html("Surveyed: " + db("getsectionssurveyed", null, null, null, id, null, null, function(data){
+		return $.parseJSON(data)[0];
+	}));
+	$('.enrolled').html("Enrolled: " + db("getsectionsenrolled", null, null, null, id, null, null, function(data){
+		return $.parseJSON(data)[0];
+	}));
+	db("getscoresforsection", null, null, null, id, null, null, function(scores){
+		var scoresJSON = $.parseJSON(scores);
+		var container = $('.graph-selector');
+		container.empty();
+		var button, label, question, data = {};
+		for(var i=0; i<scoresJSON.length; i++){
+			button = $(document.createElement('input'));
+			label = $(document.createElement('label'));
+			question = scoresJSON[i].question;
+			if(question == "Instuctor's interest"){
+				label.html("Instructor's interest");
+			}
+			else{
+				label.html(question);
+			}
+			button.attr('type', 'radio');
+			button.attr('name', 'chart-select');
+			button.attr('value', question);
+			button.attr('data-name', question);
+			label.append(button);
+			data[question] = scoresJSON[i];
+			container.append(label);
+		}
+		var first_radio = container.find("input")[0];
+		$(first_radio).attr('checked', 'checked');
+		$('.graph-selector input[name="chart-select"]').change(function() {
+			renderCharts(data[$(this).val()]);
+		});
+		$('.graph-selector input[name="chart-select"]').trigger('change');
+	});
+}
+
+function renderCharts(chartData) {
+	console.log(chartData);
+	var labels = [], data = [];
+	var statName;
+	for(statName in chartData){
+		labels.push(statName);
+		data.push(chartData[statName]);
+	}
+	var data = {
+		labels : labels,
+		datasets : [{
+			fillColor : "rgba(220,220,220,0.5)",
+			strokeColor : "rgba(220,220,220,1)",
+			data : data
+		}]
+	};
+
+	var options = {
+		scaleSteps : 20,
+		scaleStepWidth : 5,
+		scaleStartValue : 0,
+		scaleOverride : true,
+		scaleLabel : "<%=value + '%'%>"
+		//Place additional graph options here
+	};
+	
+	$('.display-chart').remove();
+	$('.chart-container').append($(document.createElement('canvas')).attr({
+		"class" : "display-chart",
+		"id" : "display-chart",
+		"height" : '350px',
+		"width" : '450px'
+	}));
+	var context = $(".display-chart").get(0).getContext("2d");
+	var barGraph = new Chart(context).Bar(data, options);
+}
+
 
 // var instr_to_all = {};
 // //Instructor Name -> whole json class object

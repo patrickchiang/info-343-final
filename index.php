@@ -15,10 +15,10 @@ startHead();
 	<div id="tabs">
 		<img src="img/logo.png" alt="Uvaluate" class="logo"/>
 		<ul>
-			<li><a href="#class-tab">Classes</a></li>
-			<li><a href="#instr-tab">Instructors</a></li>
+			<li><a href="#class-table" class='class-tab'>Classes</a></li>
+			<li><a href="#instr-table" class='instr-tab'>Instructors</a></li>
 		</ul>
-		<div class='class-table' id="class-tab">
+		<div class='class-table' id="class-table">
 			<table class="table table-hover table-striped">
 			  <thead>
 			  	<tr>
@@ -36,7 +36,7 @@ startHead();
 			  </tbody>
 			</table>
 		</div>
-		<div class='instr-table' id="instr-tab">
+		<div class='instr-table' id="instr-table">
 			<table class="table table-hover table-striped">
 			  <thead>
 			  	<tr>
@@ -69,7 +69,7 @@ startHead();
 	  	        <h2 class="main-type"></h2>
 			      </div>
 			      <div class="panel-body">
-			      	<div class='modal-table' id="modal-tab">
+			      	<div class='modal-table' id="modal-table">
 								<table class="table table-hover table-striped">
 								  <thead>
 								  	<tr>
@@ -96,8 +96,10 @@ startHead();
 					<div class='panel panel-primary graph'>
 						<div class='panel-heading'>
 							<h2 class="other-type"></h2>
-			        <h3 class="quarter"></h3>
-			        <h3 class="median"></h3>
+					        <h3 class="quarter"></h3>
+					        <h3 class="median"></h3>
+					        <h3 class="surveyed"></h3>
+					        <h3 class="enrolled"></h3>
 						</div>
 						<div class='panel-body'>
 							<div class='chart-container'>
