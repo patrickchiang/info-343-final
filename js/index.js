@@ -129,7 +129,7 @@ function courseModalRowClick(course, rowData){
 	$('.main-type').html(course);
 	$('.other-type').html(rowData.instructor);
 	$('.quarter').html("Quarter: " + rowData.quarter);
-	$('.median').html("Section: " + rowData.section);
+	$('.section').html("Section: " + rowData.section);
 	$('.surveyed').html("Surveyed: " + db("getsectionssurveyed", null, null, null, id, null, null, function(data){
 		return $.parseJSON(data)[0];
 	}));
@@ -145,8 +145,8 @@ function courseModalRowClick(course, rowData){
 			button = $(document.createElement('input'));
 			label = $(document.createElement('label'));
 			question = scoresJSON[i].question;
-			if(question == "Instuctor's interest"){
-				label.html("Instructor's interest");
+			if(question == "Instuctor's interest:"){
+				label.html("Instructor's interest:");
 			}
 			else{
 				label.html(question);
@@ -159,22 +159,36 @@ function courseModalRowClick(course, rowData){
 			data[question] = scoresJSON[i];
 			container.append(label);
 		}
-		var first_radio = container.find("input")[0];
-		$(first_radio).attr('checked', 'checked');
+		// var first_radio = container.find("input")[0];
+		// $(first_radio).attr('checked', 'checked');
 		$('.graph-selector input[name="chart-select"]').change(function() {
 			renderCharts(data[$(this).val()]);
 		});
-		$('.graph-selector input[name="chart-select"]').trigger('change');
+		$($('.graph-selector > label')[0]).trigger('click');
 	});
 }
 
 function renderCharts(chartData) {
-	console.log(chartData);
+	$('.median').html("Overall: " + (parseFloat(chartData.median)).toFixed(2));
+	var targetData = {}, key;
+	for(key in chartData){
+		if(key!="course_id" && key!= "question" && key!= "median"){
+			targetData[key] = chartData[key];
+		}
+	}
 	var labels = [], data = [];
+	var abbrevToCamel = {
+		"excellent" : "Excellent",
+		"verygood" : "Very Good",
+		"good" : "Good",
+		"fair" : "Fair",
+		"poor" : "Poor",
+		"verypoor" : "Very Poor"
+	};
 	var statName;
-	for(statName in chartData){
-		labels.push(statName);
-		data.push(chartData[statName]);
+	for(statName in targetData){
+		labels.push(abbrevToCamel[statName]);
+		data.push(targetData[statName]);
 	}
 	var data = {
 		labels : labels,
@@ -193,7 +207,7 @@ function renderCharts(chartData) {
 		scaleLabel : "<%=value + '%'%>"
 		//Place additional graph options here
 	};
-	
+
 	$('.display-chart').remove();
 	$('.chart-container').append($(document.createElement('canvas')).attr({
 		"class" : "display-chart",

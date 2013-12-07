@@ -97,7 +97,7 @@ thead > tr {
 }
 
 .info {
-	height: 500px;
+	max-height: 500px;
 }
 
 .graph {
