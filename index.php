@@ -97,9 +97,10 @@ startHead();
 						<div class='panel-heading'>
 							<h2 class="other-type"></h2>
 					        <h3 class="quarter"></h3>
-					        <h3 class="median"></h3>
+					        <h3 class="section"></h3>
 					        <h3 class="surveyed"></h3>
 					        <h3 class="enrolled"></h3>
+					        <h3 class="median"></h3>
 						</div>
 						<div class='panel-body'>
 							<div class='chart-container'>

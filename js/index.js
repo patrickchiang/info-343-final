@@ -18,6 +18,12 @@ $(function() {
 
 	// find and list all the courses
 	populateClassesTable();
+	$('.instr-tab').click(function(){
+		if(!instrTabLoaded){
+			populateInstrTable();
+			instrTabLoaded = true;
+		}
+	});
 	// get course ratings, list 'em all
 
 	// find and list num of instructors
@@ -37,6 +43,8 @@ $(function() {
 	// click handler: list all questions for section
 
 });
+
+var selectedRow, instrTabLoaded = false;
 
 function populateClassesTable() {
 	var table = $('.class-table');
@@ -88,6 +96,65 @@ function populateClassesTable() {
 	});
 }
 
+function populateInstrTable(){
+	var table = $('.instr-table');
+	var container = table.find('tbody');
+	db("listprofs", null, null, null, null, null, null, function(data) {
+		var instrs = JSON.parse(data);
+		var instrNames = [];
+		for (var i = 0; i < instrs.length; i++) {
+			var template = table.find('.merged-row.template').clone();
+			template.find(".table-name").html(instrs[i]);
+			template.attr("data-instr", instrs[i]);
+			instrNames.push(instrs[i]);
+			template.removeClass('template');
+			container.append(template);
+		}
+
+		var rows = table.find('.merged-row').not('.template');
+
+		db("sumprofratingsarray", instrNames, null, null, null, null, null, function(data){
+			var dataArray = $.parseJSON(data);
+			var rows = $('.instr-table .merged-row').not('.template').find('.table-median');
+			for(var i=0; i<rows.length; i++){
+				$(rows[i]).html(parseFloat(dataArray[instrNames[i]]).toFixed(2))
+			}
+		});
+
+		db("numclassarray", instrNames, null, null, null, null, null, function(data){
+			var dataArray = $.parseJSON(data);
+			var rows = $('.instr-table .merged-row').not('.template').find('.table-count');
+			for(var i=0; i<rows.length; i++){
+				$(rows[i]).html(parseFloat(dataArray[instrNames[i]]));
+			}
+		});
+		// var instrNames = new Array();
+		// for (var i = 0; i < rows.length; i++) {
+		// 	instrNames.push($(rows[i]).data("instr"));
+		// }
+
+
+		// db("sumcoursescores", null, null, null, null, null, courseRows, function(scores) {
+		// 	var scoreNum = JSON.parse(scores);
+		// 	var bulkcounter = $(rows).find('.table-median');
+		// 	for (var i = 0; i < bulkcounter.length; i++) {
+		// 		$(bulkcounter[i]).html(parseFloat(scoreNum[i]).toFixed(2));
+		// 	}
+		// }); 
+
+
+		// db("numprofsforsection", null, null, null, null, null, courseRows, function(instructors) {
+		// 	var instructorNum = JSON.parse(instructors);
+		// 	var bulkcounter = $(rows).find('.table-count');
+		// 	for (var i = 0; i < bulkcounter.length; i++) {
+		// 		$(bulkcounter[i]).html(instructorNum[i]);
+		// 	}
+		// });
+
+		// $('#class-table .merged-row').click(courseRowClick);
+	});
+}
+
 function courseRowClick(){
 	$('.course-header').hide();
 	$('.instr-header').show();
@@ -111,12 +178,18 @@ function courseRowClick(){
 			temp.find('.modal-median').html((parseFloat(rowData.median)).toFixed(2));
 			temp.removeClass('template');
 			temp.attr('data-id', rowData.id);
+			temp.attr('data-enrolled')
 			container.append(temp);
-			(function(course, rowData){
+			(function(course, rowData, temp){
 				temp.click(function(){
 					courseModalRowClick(course, rowData)
+					if(selectedRow){
+						selectedRow.removeClass('selected');
+					}
+					selectedRow = temp;
+					temp.addClass('selected');
 				});
-			})(courseName, rowData);
+			})(courseName, rowData, temp);
 			if(i==0){
 				temp.trigger('click');
 			}
@@ -129,7 +202,7 @@ function courseModalRowClick(course, rowData){
 	$('.main-type').html(course);
 	$('.other-type').html(rowData.instructor);
 	$('.quarter').html("Quarter: " + rowData.quarter);
-	$('.median').html("Section: " + rowData.section);
+	$('.section').html("Section: " + rowData.section);
 	$('.surveyed').html("Surveyed: " + db("getsectionssurveyed", null, null, null, id, null, null, function(data){
 		return $.parseJSON(data)[0];
 	}));
@@ -145,8 +218,8 @@ function courseModalRowClick(course, rowData){
 			button = $(document.createElement('input'));
 			label = $(document.createElement('label'));
 			question = scoresJSON[i].question;
-			if(question == "Instuctor's interest"){
-				label.html("Instructor's interest");
+			if(question == "Instuctor's interest:"){
+				label.html("Instructor's interest:");
 			}
 			else{
 				label.html(question);
@@ -159,22 +232,36 @@ function courseModalRowClick(course, rowData){
 			data[question] = scoresJSON[i];
 			container.append(label);
 		}
-		var first_radio = container.find("input")[0];
-		$(first_radio).attr('checked', 'checked');
+		// var first_radio = container.find("input")[0];
+		// $(first_radio).attr('checked', 'checked');
 		$('.graph-selector input[name="chart-select"]').change(function() {
 			renderCharts(data[$(this).val()]);
 		});
-		$('.graph-selector input[name="chart-select"]').trigger('change');
+		$($('.graph-selector > label')[0]).trigger('click');
 	});
 }
 
 function renderCharts(chartData) {
-	console.log(chartData);
+	$('.median').html("Overall: " + (parseFloat(chartData.median)).toFixed(2));
+	var targetData = {}, key;
+	for(key in chartData){
+		if(key!="course_id" && key!= "question" && key!= "median"){
+			targetData[key] = chartData[key];
+		}
+	}
 	var labels = [], data = [];
+	var abbrevToCamel = {
+		"excellent" : "Excellent",
+		"verygood" : "Very Good",
+		"good" : "Good",
+		"fair" : "Fair",
+		"poor" : "Poor",
+		"verypoor" : "Very Poor"
+	};
 	var statName;
-	for(statName in chartData){
-		labels.push(statName);
-		data.push(chartData[statName]);
+	for(statName in targetData){
+		labels.push(abbrevToCamel[statName]);
+		data.push(targetData[statName]);
 	}
 	var data = {
 		labels : labels,
@@ -193,7 +280,7 @@ function renderCharts(chartData) {
 		scaleLabel : "<%=value + '%'%>"
 		//Place additional graph options here
 	};
-	
+
 	$('.display-chart').remove();
 	$('.chart-container').append($(document.createElement('canvas')).attr({
 		"class" : "display-chart",

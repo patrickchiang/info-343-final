@@ -104,6 +104,21 @@
             echo $numclasses;
         }
 
+        if ($query == "numclassarray") {
+            $profArray = explode(",", $prof);
+            $classCounts = array();
+            for($i=0; $i<count($profArray); $i++){
+                 $stmt = $dbh->query('SELECT * FROM courses WHERE instructor LIKE "' . $profArray[$i] . '"');
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $numclasses = 0;
+                while ($row = $stmt->fetch()) {
+                    $numclasses++;
+                }
+                $classCounts[$profArray[$i]] = $numclasses;
+            }
+            echo json_encode($classCounts);
+        }
+
         if ($query == "sumcoursescores") {
             // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=sumcoursescores&dept=INFO&num=200
             // This gives you estimated number of people who voted for each category
@@ -209,7 +224,7 @@
         if ($query == "sumprofratings") {
             // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=sumprofratings&prof=Michael%20Eisenberg
             // Sum up ratings for all questions relevant to the instructor
-            $stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $prof . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
+            $stmt = $dbh->query('SELECT c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $prof . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
             $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0);
             while ($row = $stmt->fetch()) {
                 $scores["surveyed"] += $row["surveyed"];
@@ -219,8 +234,26 @@
                 $scores["fair"] += round($row["surveyed"] * $row["fair"] / 100);
                 $scores["poor"] += round($row["surveyed"] * $row["poor"] / 100);
                 $scores["verypoor"] += round($row["surveyed"] * $row["verypoor"] / 100);
+                $scores["median"] += $row["surveyed"] * $row["median"];
             }
+            $scores["median"] /= $scores["surveyed"];
             echo json_encode($scores);
+        }
+
+        if($query=="sumprofratingsarray"){
+            $profArray = explode(",", $prof);
+            $profRatings = array();
+            for($i=0; $i<count($profArray); $i++){
+                $stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $profArray[$i] . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
+                $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0);
+                while ($row = $stmt->fetch()) {
+                    $scores["surveyed"] += $row["surveyed"];
+                    $scores["median"] += $row["surveyed"] * $row["median"];
+                }
+                $scores["median"] /= $scores["surveyed"];
+                $profRatings[$profArray[$i]] = $scores["median"];
+            }
+            echo json_encode($profRatings);
         }
 
         $dbh = null;
