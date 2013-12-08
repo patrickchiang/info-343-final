@@ -18,6 +18,12 @@ $(function() {
 
 	// find and list all the courses
 	populateClassesTable();
+	$('.instr-tab').click(function(){
+		if(!instrTabLoaded){
+			populateInstrTable();
+			instrTabLoaded = true;
+		}
+	});
 	// get course ratings, list 'em all
 
 	// find and list num of instructors
@@ -37,6 +43,8 @@ $(function() {
 	// click handler: list all questions for section
 
 });
+
+var selectedRow, instrTabLoaded = false;
 
 function populateClassesTable() {
 	var table = $('.class-table');
@@ -88,6 +96,65 @@ function populateClassesTable() {
 	});
 }
 
+function populateInstrTable(){
+	var table = $('.instr-table');
+	var container = table.find('tbody');
+	db("listprofs", null, null, null, null, null, null, function(data) {
+		var instrs = JSON.parse(data);
+		var instrNames = [];
+		for (var i = 0; i < instrs.length; i++) {
+			var template = table.find('.merged-row.template').clone();
+			template.find(".table-name").html(instrs[i]);
+			template.attr("data-instr", instrs[i]);
+			instrNames.push(instrs[i]);
+			template.removeClass('template');
+			container.append(template);
+		}
+
+		var rows = table.find('.merged-row').not('.template');
+
+		db("sumprofratingsarray", instrNames, null, null, null, null, null, function(data){
+			var dataArray = $.parseJSON(data);
+			var rows = $('.instr-table .merged-row').not('.template').find('.table-median');
+			for(var i=0; i<rows.length; i++){
+				$(rows[i]).html(parseFloat(dataArray[instrNames[i]]).toFixed(2))
+			}
+		});
+
+		db("numclassarray", instrNames, null, null, null, null, null, function(data){
+			var dataArray = $.parseJSON(data);
+			var rows = $('.instr-table .merged-row').not('.template').find('.table-count');
+			for(var i=0; i<rows.length; i++){
+				$(rows[i]).html(parseFloat(dataArray[instrNames[i]]));
+			}
+		});
+		// var instrNames = new Array();
+		// for (var i = 0; i < rows.length; i++) {
+		// 	instrNames.push($(rows[i]).data("instr"));
+		// }
+
+
+		// db("sumcoursescores", null, null, null, null, null, courseRows, function(scores) {
+		// 	var scoreNum = JSON.parse(scores);
+		// 	var bulkcounter = $(rows).find('.table-median');
+		// 	for (var i = 0; i < bulkcounter.length; i++) {
+		// 		$(bulkcounter[i]).html(parseFloat(scoreNum[i]).toFixed(2));
+		// 	}
+		// }); 
+
+
+		// db("numprofsforsection", null, null, null, null, null, courseRows, function(instructors) {
+		// 	var instructorNum = JSON.parse(instructors);
+		// 	var bulkcounter = $(rows).find('.table-count');
+		// 	for (var i = 0; i < bulkcounter.length; i++) {
+		// 		$(bulkcounter[i]).html(instructorNum[i]);
+		// 	}
+		// });
+
+		// $('#class-table .merged-row').click(courseRowClick);
+	});
+}
+
 function courseRowClick(){
 	$('.course-header').hide();
 	$('.instr-header').show();
@@ -111,12 +178,18 @@ function courseRowClick(){
 			temp.find('.modal-median').html((parseFloat(rowData.median)).toFixed(2));
 			temp.removeClass('template');
 			temp.attr('data-id', rowData.id);
+			temp.attr('data-enrolled')
 			container.append(temp);
-			(function(course, rowData){
+			(function(course, rowData, temp){
 				temp.click(function(){
 					courseModalRowClick(course, rowData)
+					if(selectedRow){
+						selectedRow.removeClass('selected');
+					}
+					selectedRow = temp;
+					temp.addClass('selected');
 				});
-			})(courseName, rowData);
+			})(courseName, rowData, temp);
 			if(i==0){
 				temp.trigger('click');
 			}
