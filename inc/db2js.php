@@ -96,8 +96,8 @@
         if ($query == "numclassarray") {
             $profArray = explode(",", $prof);
             $classCounts = array();
-            for($i=0; $i<count($profArray); $i++){
-                 $stmt = $dbh->query('SELECT * FROM courses WHERE instructor LIKE "' . $profArray[$i] . '"');
+            for ($i = 0; $i < count($profArray); $i++) {
+                $stmt = $dbh->query('SELECT * FROM courses WHERE instructor LIKE "' . $profArray[$i] . '"');
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);
                 $numclasses = 0;
                 while ($row = $stmt->fetch()) {
@@ -121,7 +121,7 @@
                 }
 
                 $query_num = substr($query_num, 0, strlen($query_num) - 11);
-                
+
                 $stmt = $dbh->query($query_num);
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);
                 $scores = array();
@@ -222,10 +222,10 @@
             echo json_encode($ratings);
         }
 
-        if($query=="sumprofratingsarray"){
+        if ($query == "sumprofratingsarray") {
             $profArray = explode(",", $prof);
             $profRatings = array();
-            for($i=0; $i<count($profArray); $i++){
+            for ($i = 0; $i < count($profArray); $i++) {
                 $stmt = $dbh->query('SELECT s.question, c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $profArray[$i] . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
                 $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0);
                 while ($row = $stmt->fetch()) {
@@ -238,6 +238,15 @@
             echo json_encode($profRatings);
         }
 
+        if ($query == "getsectionenrolled") {
+            // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getsectionenrolled&cid=142
+            // Same as above, except with cid
+            $stmt = $dbh->query('SELECT c.surveyed, c.enrolled FROM courses c JOIN scores s ON c.id = s.course_id WHERE s.course_id = "' . $cid . '"');
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $ratings = array();
+            $row = $stmt->fetch();
+            echo json_encode($row);
+        }
         $dbh = null;
     } catch(PDOException $e) {
         echo $e->getMessage();

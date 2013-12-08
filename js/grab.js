@@ -18,6 +18,15 @@ $("body > a").not(".navlink").each(function(iout) {
 		// Get rows
 		var classes = {};
 		var pageDiv = "." + linkName.substring(2, linkName.length - 5);
+
+		if (pageDiv.indexOf("&") != -1) {
+			return;
+		}
+
+		if (pageDiv.indexOf("+") != -1) {
+			return;
+		}
+
 		var rows = $(pageDiv + " table tbody tr");
 		var className = linkName.substring(2, linkName.length - 5);
 
@@ -47,4 +56,4 @@ $("body > a").not(".navlink").each(function(iout) {
 		});
 		json.push(classes);
 	});
-}); 
+});
