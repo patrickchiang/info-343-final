@@ -18,7 +18,7 @@
 
 	 CREATE TABLE IF NOT EXISTS `scores` (
 	 `course_id` int(11) NOT NULL,
-	 `question` varchar(30) NOT NULL,
+	 `question` varchar(50) NOT NULL,
 	 `excellent` int(11) NOT NULL,
 	 `verygood` int(11) NOT NULL,
 	 `good` int(11) NOT NULL,
@@ -32,6 +32,8 @@
 
 	$string = file_get_contents("../data/I.json");
 	$json = json_decode($string, true);
+    
+    echo $string;
 
 	try {
 		// connect to mysql don't hack me thanks
@@ -40,7 +42,7 @@
 		$user = "pchiang_uvaluate";
 		$pass = "info343final";
 		$dbh = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
-
+		
 		foreach ($json as $row) {
 			// for the courses
 			$dept = $row[dept];
@@ -73,16 +75,16 @@
 					$stmt->bindParam(7, $info[4]);
 					$stmt->bindParam(8, $info[5]);
 					$stmt->bindParam(9, $info[6]);
-
+                                        
 					$median += $info[6];
 					$i++;
 
 					$stmt->execute();
 				}
 			}
-            
+                        
             $avg = $median / $i;
-            
+                        
 			$stmt = $dbh->prepare("UPDATE courses SET median=$avg WHERE id=$id");
 			$stmt->execute();
 		}
