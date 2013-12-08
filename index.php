@@ -10,8 +10,6 @@ startHead();
 	<!-- Everything below here is INSIDE the body tag -->
 
 <div class="main-col">
- 
-	<!-- <img src="img/bench.png" alt="bench" class="benches"/> -->
 	<div id="tabs">
 		<img src="img/logo.png" alt="Uvaluate" class="logo"/>
 		<ul>
@@ -56,6 +54,7 @@ startHead();
 		</div>
 	</div>
 	<!-- Everything above here is INSIDE the body tag -->
+
 
 	<div class="modal fade" id="rowModal">
 	  <div class="modal-dialog">

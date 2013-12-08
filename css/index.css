@@ -1,76 +1,75 @@
 @import url(common.css);
 
 .template {
-	display: none;
+        display: none;
 }
 
 .main-col{
-	background-image: url('../img/snow.png');
-	width: 70%;
-	height: 100%;
-	display: block;
-	margin: 0;
-	padding: 20px;
-	border: 1px solid black;
-	position: absolute;
-	left: 0;
+        background-image: url('../img/snow.png');
+        width: 70%;
+        height: 100%;
+        display: block;
+        margin: 0;
+        padding: 20px;
+        position: absolute;
+        left: 0;
 }
 
 canvas.display-chart {
-	width: 500px;
-	height: 350px;
+        width: 500px;
+        height: 350px;
 }
 
 img.bench {
-	/*position: relative;*/
-	height: 100%;
-	float: right;
-	display: inline-block;
-	top: 0;
-	/*right: 0;*/
-	min-width: 30%;
-	z-index: -1;
+        /*position: relative;*/
+        height: 100%;
+        float: right;
+        display: inline-block;
+        top: 0;
+        /*right: 0;*/
+        min-width: 30%;
+        z-index: -1;
 }
 
 .logo {
-	width: 250px;
-	height: 150px;
-	margin-bottom: 5px;
+        width: 250px;
+        height: 150px;
+        margin-bottom: 5px;
 }
 
 #tabs {
-	width: 90%;
-	min-width: 420px;
-	height: 95%;
-	box-shadow: 10px 10px 5px #888888;
-	margin-left: auto;
-	margin-right: auto;
-	overflow: auto;
+        width: 90%;
+        min-width: 420px;
+        height: 95%;
+        max-height: 670px;
+        box-shadow: 10px 10px 5px #888888;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
 }
 
 input[type=radio] {
-	margin-left: 10px;
+        margin-left: 10px;
 }
 
 .ui-widget-header {
-	border: none;
-	border-bottom: 1px solid #aaa;
-	background: none;
+        border: none;
+        border-bottom: 1px solid #aaa;
+        background: none;
 }
 
 .table {
-	font-family: 'Raleway', sans-serif;
+        font-family: 'Raleway', sans-serif;
 
 }
 
 .class-table, .instr-table {
-	display: inline-block;
-	max-height: 650px;
-	height: 80%;
-	min-width: 450px;
-	overflow: auto;
-	border: 1px solid #CCC;
-	box-shadow: 2px 2px 4px #CCC;
+       display: inline-block;
+    max-height: 450px;
+    min-width: 450px;
+    overflow: auto;
+    border: 1px solid #CCC;
+    box-shadow: 2px 2px 4px #CCC;
 }
 
 .info {
@@ -78,83 +77,85 @@ input[type=radio] {
 } 
 
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
-	background-color: #7F3FBF;
-	cursor: pointer;
-	color: #FFF;
+        background-color: #7F3FBF;
+        cursor: pointer;
+        color: #FFF;
 }
 .table-hover > tbody > tr.selected > td, .table-hover > tbody > tr.selected > th {
-	background-color: #7F3FBF;
-	color: #FFF;
+        background-color: #7F3FBF;
+        color: #FFF;
 }
 
 thead > tr {
-	background-color: #EEE;
-	font-weight: bold;
+        background-color: #EEE;
+        font-weight: bold;
 }
 .graph-selector {
-	width: 400px;
-	margin: auto;
+        width: 400px;
+        margin: auto;
 }
 
 .panel-primary > .panel-heading {
-	background-color: #663399;
+        background-color: #663399;
 }
 
 .graph-selector > label {
-	margin-left: 10px;
+        margin-left: 10px;
 }
 
 .info {
-	max-height: 500px;
+        max-height: 500px;
 }
 
 .graph {
-	height: 600px;
+        height: 600px;
 }
 
 .panel {
 	text-align: center;
-	/*width: 600px;*/
-	overflow: auto;
-	display: inline-block;
-	box-shadow: 2px 2px 4px;
-	vertical-align: top;
-	clear: both;
-	margin: 10px;
-	width: 600px;
+    width: 600px;
+    margin: auto;
+    overflow: auto;
+    display: inline-block;
+    box-shadow: 2px 2px 4px;
+    vertical-align: top;
+    clear: both;
+    margin: 20px;
+    width: 600px;
 }
 
 .modal-dialog {
-	width: 80%;
+        width: 90%;
 }
 
 .modal-body {
-	text-align: center;
+    text-align: center;
 }
 
+
 @media (min-height: 689px) {
-	.class-table, .instr-table {
-		max-height: 860px;
-		height: 50%;
-	}
+        .class-table, .instr-table {
+                max-height: 860px;
+                height: 50%;
+        }
 }
 
 @media (max-width: 992px) {
-	.panel, .class-table {
-		display: block;
-	}
-	.panel, .class-table, .instr-table {
-		width: 80%;
-		min-width: 400px;
-		margin: 20px auto;
-	}
-	.graph-selector {
-		margin: 0 auto;
-	}
-	img.bench {
-		display: none;
-	}
-	.main-col {
-		width: 100%;
-	}
+        .panel, .class-table {
+                display: block;
+        }
+        .panel, .class-table, .instr-table {
+                width: 80%;
+                min-width: 400px;
+                margin: 20px auto;
+        }
+        .graph-selector {
+                margin: 0 auto;
+        }
+        img.bench {
+                display: none;
+        }
+        .main-col {
+                width: 100%;
+        }
 }
