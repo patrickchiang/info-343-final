@@ -125,19 +125,24 @@ thead > tr {
 }
 
 .modal-dialog {
-        width: 90%;
+    width: 90%;
+    min-width: 550px;
 }
 
 .modal-body {
     text-align: center;
 }
 
+.modal-body .panel-body{
+	padding: 15px 0;
+
+}
 
 @media (min-height: 689px) {
-        .class-table, .instr-table {
-                max-height: 860px;
-                height: 50%;
-        }
+    .class-table, .instr-table {
+            max-height: 860px;
+            height: 50%;
+    }
 }
 
 @media (max-width: 992px) {
@@ -146,7 +151,7 @@ thead > tr {
         }
         .panel, .class-table, .instr-table {
                 width: 80%;
-                min-width: 400px;
+                min-width: 500px;
                 margin: 20px auto;
         }
         .graph-selector {
