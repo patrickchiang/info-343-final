@@ -116,7 +116,7 @@
                 $query_num = "";
 
                 for ($i = 0; $i < count($bulk_dept); $i++) {
-                    $query_num .= 'SELECT SUM(s.median * c.surveyed) / SUM(c.surveyed) AS median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.dept = "' . $bulk_dept[$i] . '" AND c.num = "' . $bulk_num[$i] . '"';
+                    $query_num .= 'SELECT SUM(s.median * c.surveyed) * 1.0 / SUM(c.surveyed) AS median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.dept = "' . $bulk_dept[$i] . '" AND c.num = "' . $bulk_num[$i] . '"';
                     $query_num .= ' UNION ALL ';
                 }
 
