@@ -97,11 +97,13 @@ function populateClassesTable() {
 }
 
 function populateInstrTable(){
-	var table = $('.instr-table');
-	var container = table.find('tbody');
+	var table = $('.instr-table');	//Table that distinguishes which tab it is
+	var container = table.find('tbody');	//Container to append the templates to
 	db("listprofs", null, null, null, null, null, null, function(data) {
 		var instrs = JSON.parse(data);
 		var instrNames = [];
+
+		//For each instructor name, create & append template, add name to instrNames
 		for (var i = 0; i < instrs.length; i++) {
 			var template = table.find('.merged-row.template').clone();
 			template.find(".table-name").html(instrs[i]);
@@ -111,49 +113,31 @@ function populateInstrTable(){
 			container.append(template);
 		}
 
+		//All table rows
 		var rows = table.find('.merged-row').not('.template');
 
+		//Populate the rating column for professors
 		db("sumprofratingsarray", instrNames, null, null, null, null, null, function(data){
 			var dataArray = $.parseJSON(data);
-			var rows = $('.instr-table .merged-row').not('.template').find('.table-median');
-			for(var i=0; i<rows.length; i++){
-				$(rows[i]).html(parseFloat(dataArray[instrNames[i]]).toFixed(2))
+			var containers = rows.find('.table-median');
+			for(var i=0; i<containers.length; i++){
+				$(containers[i]).html(parseFloat(dataArray[instrNames[i]]).toFixed(2))
 			}
 		});
 
+		//Populate number of classes column
 		db("numclassarray", instrNames, null, null, null, null, null, function(data){
 			var dataArray = $.parseJSON(data);
-			var rows = $('.instr-table .merged-row').not('.template').find('.table-count');
+			var containers = rows.find('.table-count');
 			for(var i=0; i<rows.length; i++){
-				$(rows[i]).html(parseFloat(dataArray[instrNames[i]]));
+				$(containers[i]).html(parseFloat(dataArray[instrNames[i]]));
 			}
 		});
-		// var instrNames = new Array();
-		// for (var i = 0; i < rows.length; i++) {
-		// 	instrNames.push($(rows[i]).data("instr"));
-		// }
-
-
-		// db("sumcoursescores", null, null, null, null, null, courseRows, function(scores) {
-		// 	var scoreNum = JSON.parse(scores);
-		// 	var bulkcounter = $(rows).find('.table-median');
-		// 	for (var i = 0; i < bulkcounter.length; i++) {
-		// 		$(bulkcounter[i]).html(parseFloat(scoreNum[i]).toFixed(2));
-		// 	}
-		// }); 
-
-
-		// db("numprofsforsection", null, null, null, null, null, courseRows, function(instructors) {
-		// 	var instructorNum = JSON.parse(instructors);
-		// 	var bulkcounter = $(rows).find('.table-count');
-		// 	for (var i = 0; i < bulkcounter.length; i++) {
-		// 		$(bulkcounter[i]).html(instructorNum[i]);
-		// 	}
-		// });
-
-		// $('#class-table .merged-row').click(courseRowClick);
+		$('#instr-table .merged-row').click(instrRowClick);
 	});
 }
+
+
 
 function courseRowClick(){
 	$('.course-header').hide();
@@ -178,7 +162,6 @@ function courseRowClick(){
 			temp.find('.modal-median').html((parseFloat(rowData.median)).toFixed(2));
 			temp.removeClass('template');
 			temp.attr('data-id', rowData.id);
-			temp.attr('data-enrolled')
 			container.append(temp);
 			(function(course, rowData, temp){
 				temp.click(function(){
@@ -190,6 +173,45 @@ function courseRowClick(){
 					temp.addClass('selected');
 				});
 			})(courseName, rowData, temp);
+			if(i==0){
+				temp.trigger('click');
+			}
+		}
+	});
+}
+
+function instrRowClick(){
+	$('.instr-header').hide();
+	$('.course-header').show();
+	$('.modal-instr').hide();
+	$('.modal-name').show();
+	var instrName = $(this).attr('data-instr');
+	db("getsectionsbyprof", instrName, null, null, null, null, null, function(data){
+		var courseList = $.parseJSON(data),
+		container = $('#modal-table tbody'), template = $('#modal-table .template');
+		var savedTemplate = $(container.children()[0]);
+		container.empty();
+		container.append(savedTemplate);
+		for(var i=0; i<courseList.length; i++){
+			temp = template.clone();
+			rowData = courseList[i];
+			temp.find('.modal-name').html(rowData.dept + " " + rowData.num);
+			temp.find('.modal-qtr').html(rowData.quarter);
+			temp.find('.modal-sect').html(rowData.section);
+			temp.find('.modal-median').html((parseFloat(rowData.median)).toFixed(2));
+			temp.removeClass('template');
+			temp.attr('data-id', rowData.id);
+			container.append(temp);
+			(function(instr, rowData, temp){
+				temp.click(function(){
+					// instrModalRowClick(instr, rowData);
+					// if(selectedRow){
+					// 	selectedRow.removeClass('selected');
+					// }
+					// selectedRow = temp;
+					// temp.addClass('selected');
+				});
+			})(instrName, rowData, temp);
 			if(i==0){
 				temp.trigger('click');
 			}

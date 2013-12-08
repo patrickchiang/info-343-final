@@ -93,17 +93,6 @@
             echo json_encode($bulk_instructions);
         }
 
-        if ($query == "numclass") {
-            // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=numclass&prof=Michael%20Eisenberg
-            $stmt = $dbh->query('SELECT * FROM courses WHERE instructor LIKE "' . $prof . '"');
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $numclasses = 0;
-            while ($row = $stmt->fetch()) {
-                $numclasses++;
-            }
-            echo $numclasses;
-        }
-
         if ($query == "numclassarray") {
             $profArray = explode(",", $prof);
             $classCounts = array();
@@ -173,6 +162,18 @@
             echo json_encode($sections);
         }
 
+        if ($query == "getsectionsbyprof") {
+            // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getsections&dept=INFO&num=200
+            // use "id" to get details on each section
+            $stmt = $dbh->query('SELECT * FROM courses WHERE instructor = "' . $prof . '"');
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $sections = array();
+            while ($row = $stmt->fetch()) {
+                $sections[] = $row;
+            }
+            echo json_encode($sections);
+        }
+
         if ($query == "getscoresforsection") {
             // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=getscoresforsection&cid=142
             // Use getsections to get cid, then get scores using this query
@@ -219,25 +220,6 @@
                 $ratings[] = $row;
             }
             echo json_encode($ratings);
-        }
-
-        if ($query == "sumprofratings") {
-            // Example: http://webhost.ischool.uw.edu/~pchiang/info-343-final/inc/db2js.php?query=sumprofratings&prof=Michael%20Eisenberg
-            // Sum up ratings for all questions relevant to the instructor
-            $stmt = $dbh->query('SELECT c.surveyed, s.excellent, s.verygood, s.good, s.fair, s.poor, s.verypoor, s.median FROM courses c JOIN scores s ON c.id = s.course_id WHERE c.instructor = "' . $prof . '" AND (s.question LIKE "%instructor%" OR s.question LIKE "%grad%")');
-            $scores = array("surveyed" => 0, "excellent" => 0, "verygood" => 0, "good" => 0, "fair" => 0, "poor" => 0, "verypoor" => 0);
-            while ($row = $stmt->fetch()) {
-                $scores["surveyed"] += $row["surveyed"];
-                $scores["excellent"] += round($row["surveyed"] * $row["excellent"] / 100);
-                $scores["verygood"] += round($row["surveyed"] * $row["verygood"] / 100);
-                $scores["good"] += round($row["surveyed"] * $row["good"] / 100);
-                $scores["fair"] += round($row["surveyed"] * $row["fair"] / 100);
-                $scores["poor"] += round($row["surveyed"] * $row["poor"] / 100);
-                $scores["verypoor"] += round($row["surveyed"] * $row["verypoor"] / 100);
-                $scores["median"] += $row["surveyed"] * $row["median"];
-            }
-            $scores["median"] /= $scores["surveyed"];
-            echo json_encode($scores);
         }
 
         if($query=="sumprofratingsarray"){
