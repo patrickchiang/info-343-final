@@ -198,12 +198,11 @@ function modalRowClick(type, course, rowData){
 	}
 	$('.quarter').html("Quarter: " + rowData.quarter);
 	$('.section').html("Section: " + rowData.section);
-	$('.surveyed').html("Surveyed: " + db("getsectionssurveyed", null, null, null, id, null, null, function(data){
-		return $.parseJSON(data)[0];
-	}));
-	$('.enrolled').html("Enrolled: " + db("getsectionsenrolled", null, null, null, id, null, null, function(data){
-		return $.parseJSON(data)[0];
-	}));
+	db("getsectionenrolled", null, null, null, id, null, null, function(data){
+		var enrolledJSON =  $.parseJSON(data);
+		$('.surveyed').html("Surveyed: " + enrolledJSON.surveyed);
+		$('.enrolled').html("Enrolled: " + enrolledJSON.enrolled);
+	});
 	db("getscoresforsection", null, null, null, id, null, null, function(scores){
 		var scoresJSON = $.parseJSON(scores);
 		var container = $('.graph-selector');
