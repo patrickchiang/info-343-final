@@ -204,12 +204,12 @@ function instrRowClick(){
 			container.append(temp);
 			(function(instr, rowData, temp){
 				temp.click(function(){
-					// instrModalRowClick(instr, rowData);
-					// if(selectedRow){
-					// 	selectedRow.removeClass('selected');
-					// }
-					// selectedRow = temp;
-					// temp.addClass('selected');
+					instrModalRowClick(instr, rowData);
+					if(selectedRow){
+						selectedRow.removeClass('selected');
+					}
+					selectedRow = temp;
+					temp.addClass('selected');
 				});
 			})(instrName, rowData, temp);
 			if(i==0){
@@ -254,8 +254,48 @@ function courseModalRowClick(course, rowData){
 			data[question] = scoresJSON[i];
 			container.append(label);
 		}
-		// var first_radio = container.find("input")[0];
-		// $(first_radio).attr('checked', 'checked');
+		$('.graph-selector input[name="chart-select"]').change(function() {
+			renderCharts(data[$(this).val()]);
+		});
+		$($('.graph-selector > label')[0]).trigger('click');
+	});
+}
+
+function instrModalRowClick(instr, rowData){
+	var id = rowData.id;
+	$('.main-type').html(rowData.instructor);
+	$('.other-type').html(rowData.dept + " " + rowData.num);
+	$('.quarter').html("Quarter: " + rowData.quarter);
+	$('.section').html("Section: " + rowData.section);
+	$('.surveyed').html("Surveyed: " + db("getsectionssurveyed", null, null, null, id, null, null, function(data){
+		return $.parseJSON(data)[0];
+	}));
+	$('.enrolled').html("Enrolled: " + db("getsectionsenrolled", null, null, null, id, null, null, function(data){
+		return $.parseJSON(data)[0];
+	}));
+	db("getscoresforsection", null, null, null, id, null, null, function(scores){
+		var scoresJSON = $.parseJSON(scores);
+		var container = $('.graph-selector');
+		container.empty();
+		var button, label, question, data = {};
+		for(var i=0; i<scoresJSON.length; i++){
+			button = $(document.createElement('input'));
+			label = $(document.createElement('label'));
+			question = scoresJSON[i].question;
+			if(question == "Instuctor's interest:"){
+				label.html("Instructor's interest:");
+			}
+			else{
+				label.html(question);
+			}
+			button.attr('type', 'radio');
+			button.attr('name', 'chart-select');
+			button.attr('value', question);
+			button.attr('data-name', question);
+			label.append(button);
+			data[question] = scoresJSON[i];
+			container.append(label);
+		}
 		$('.graph-selector input[name="chart-select"]').change(function() {
 			renderCharts(data[$(this).val()]);
 		});
