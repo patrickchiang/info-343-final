@@ -41,11 +41,12 @@ img.bench {
 #tabs {
 	width: 90%;
 	min-width: 420px;
+	height: 95%;
 	box-shadow: 10px 10px 5px #888888;
 	margin-left: auto;
 	margin-right: auto;
+	overflow: auto;
 }
-
 
 input[type=radio] {
 	margin-left: 10px;
@@ -59,16 +60,23 @@ input[type=radio] {
 
 .table {
 	font-family: 'Raleway', sans-serif;
+
 }
 
 .class-table, .instr-table {
 	display: inline-block;
-	max-height: 326px;
+	max-height: 650px;
+	height: 80%;
 	min-width: 450px;
 	overflow: auto;
 	border: 1px solid #CCC;
 	box-shadow: 2px 2px 4px #CCC;
 }
+
+.info {
+   max-height: 500px;
+} 
+
 .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
 	background-color: #7F3FBF;
 	cursor: pointer;
@@ -107,19 +115,28 @@ thead > tr {
 .panel {
 	text-align: center;
 	/*width: 600px;*/
-	margin: auto;
 	overflow: auto;
 	display: inline-block;
 	box-shadow: 2px 2px 4px;
 	vertical-align: top;
 	clear: both;
-	margin: 20px;
+	margin: 10px;
 	width: 600px;
 }
 
 .modal-dialog {
-	min-width: 460px;
-	width: 90%;
+	width: 80%;
+}
+
+.modal-body {
+	text-align: center;
+}
+
+@media (min-height: 689px) {
+	.class-table, .instr-table {
+		max-height: 860px;
+		height: 50%;
+	}
 }
 
 @media (max-width: 992px) {
