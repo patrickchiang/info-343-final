@@ -15,7 +15,7 @@
     padding: 20px;
 }
 
-canvas.display-chart {
+canvas.display-cart {
     width: 500px;
     height: 350px;
 }
@@ -40,13 +40,12 @@ img.bench {
 #tabs {
     width: 90%;
     min-width: 420px;
-    height: 100%;
-    max-height: 670px;
+    height: 85%;
+    max-height: 625px;
     box-shadow: 10px 10px 5px #888888;
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
-
 }
 
 input[type=radio] {
@@ -66,13 +65,12 @@ input[type=radio] {
 
 .class-table, .instr-table {
     /*display: inline-block;*/
-    max-height: 600px;
+    max-height: 550px;
     min-height: 150px;
-    height: 50%;
+    height: 70%;
     overflow-y: auto;
     border: 1px solid #CCC;
     box-shadow: 2px 2px 4px #CCC;
-
 }
 
 .info {
@@ -115,7 +113,7 @@ thead > tr {
 }
 
 .panel {
-	text-align: center;
+    text-align: center;
     width: 600px;
     margin: auto;
     overflow: auto;
@@ -141,20 +139,19 @@ thead > tr {
 
 }
 
-h3{
+h3 { 
     display: inline-block;
     margin-left: 20px;
     margin-right: 10px;
 }
 
 .chart text {
-        text-anchor: middle;
+    text-anchor: middle;
 }
 
-@media (min-height: 689px) {
+@media (max-height: 541px) {
     .class-table, .instr-table {
-        max-height: 860px;
-        height: 50%;
+        height: 20%;
     }
 }
 
