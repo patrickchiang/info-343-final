@@ -103,7 +103,7 @@ startHead();
 						</div>
 						<div class='panel-body'>
 							<div class='chart-container'>
-								<canvas id="display-chart" class="display-chart" width="450" height="350"></canvas>
+								
 							</div>
 							<div class='graph-selector'></div>
 						</div>

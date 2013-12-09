@@ -252,7 +252,7 @@ function renderCharts(chartData) {
 	};
 	var statName;
 	for(statName in targetData){
-		labels.push(abbrevToCamel[statName]);
+		labels.push(abbrevToCamel[statName] + ":  " + targetData[statName] + "%");
 		data.push(targetData[statName]);
 	}
 	var data = {
@@ -281,6 +281,7 @@ function renderCharts(chartData) {
 		"width" : '450px'
 	}));
 	var context = $(".display-chart").get(0).getContext("2d");
+	//Maybe add labels here to the chart using canvas
 	var barGraph = new Chart(context).Bar(data, options);
 }
 

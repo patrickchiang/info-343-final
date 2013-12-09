@@ -138,6 +138,10 @@ thead > tr {
 
 }
 
+.chart text{
+	text-anchor: middle;
+}
+
 @media (min-height: 689px) {
     .class-table, .instr-table {
             max-height: 860px;
