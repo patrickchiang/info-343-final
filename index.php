@@ -11,17 +11,19 @@ startHead();
 
 <div class="main-col">
 	<div id="tabs">
-		<img src="img/logo.png" alt="Uvaluate" class="logo"/>
+		<img src="img/logo.png" alt="Uvaluate" class="logo">
+
 		<ul>
 			<li><a href="#class-table" class='class-tab'>Classes</a></li>
 			<li><a href="#instr-table" class='instr-tab'>Instructors</a></li>
 		</ul>
+
 		<div class='class-table' id="class-table">
 			<table class="table table-hover table-striped">
 			  <thead>
 			  	<tr>
-			  		<td>Course Name</td>
-			  		<td>Overall (X.XX/5)</td>
+			  		<td><a href="#" rel="tooltip" title="Course ID of given course. Click on course you want to evaluate and discover information about the course">Course Name</a></td>
+			  		<td><a href="#" rel="tooltip" title="All the professors' ratings that teach under this course divded by 5"> Overall (X.XX/5) </a></td>
 			  		<td>Number of Instructors</td>
 			  	</tr>
 			  </thead>
@@ -38,8 +40,8 @@ startHead();
 			<table class="table table-hover table-striped">
 			  <thead>
 			  	<tr>
-			  		<td>Instructor</td>
-			  		<td>Overall (X.XX/5)</td>
+			  		<td><a href="#" rel="tooltip" title="Course ID of given course. Click on course you want to evaluate and discover information about the course">Instructor </a></td>
+			  		<td><a href="#" rel="tooltip" title="All the class ratings that the professor teaches divided by 5"> Overall (X.XX/5) </a></td>
 			  		<td>Number of Classes</td>
 			  	</tr>
 			  </thead>
