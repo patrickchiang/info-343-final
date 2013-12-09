@@ -10,6 +10,8 @@ $(function() {
 		}
 	});
 
+	//shows tooltips when hovering over
+	$('a').tooltip('show');
 });
 
 var selectedRow, instrTabLoaded = false;
